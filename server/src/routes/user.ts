@@ -1,8 +1,9 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Router, Request, Response } from "express";
 import { IUser, UserModel } from "../models/user";
 import { UserErrors } from "../errors";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { verifyToken } from "../middlewares/user";
 const router = Router();
 
 router.post("/register", async (req: Request, res: Response) => {
@@ -41,24 +42,58 @@ router.post("/login", async (req: Request, res: Response) => {
     if (!isMatch) {
       return res.status(400).json({ type: UserErrors.WRONG_CREDENTIALS });
     }
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET);
     res.json({ token, userID: user._id });
   } catch (err) {
     res.status(500).json({ type: err });
   }
 });
 
-export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
-  if (authHeader) {
-    jwt.verify(authHeader, process.env.JWT_SECRET, (err) => {
-      if (err) {
-        return res.sendStatus(403);
-      }
-      next();
-    });
+router.get("/profile", verifyToken, async (req: Request, res: Response) => {
+  const { id } = req.body;
+  try {
+    const user = await UserModel.findById(id);
+    res.json({ user });
+  } catch (err) {
+    res.status(400).json({ err });
   }
-  return res.sendStatus(401);
-};
-
+});
+router.put("/profile", verifyToken, async (req: Request, res: Response) => {
+  const { id } = req.body;
+  const { fullName, password, email, phone, address } = req.body;
+  try {
+    const user = await UserModel.findById(id);
+    if (!user) {
+      return res.status(400).json({ type: UserErrors.NO_USER_FOUND });
+    }
+    if (fullName) {
+      user.fullName = fullName;
+    }
+    if (password) {
+      user.password = password;
+    }
+    if (email) {
+      user.email = email;
+    }
+    if (phone) {
+      user.phone = phone;
+    }
+    if (address) {
+      user.address = address;
+    }
+    await user.save();
+    res.json({ message: "User Updated Successfully" });
+  } catch (err) {
+    res.status(500).json({ type: err });
+  }
+});
+router.delete("/profile", verifyToken, async (req: Request, res: Response) => {
+  const { id } = req.body;
+  try {
+    const user = await UserModel.findByIdAndDelete(id);
+    res.json({ message: "User Deleted Successfully" });
+  } catch (err) {
+    res.status(500).json({ type: err });
+  }
+});
 export { router as userRouter };
