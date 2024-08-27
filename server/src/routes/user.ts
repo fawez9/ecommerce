@@ -11,7 +11,7 @@ router.post("/register", async (req: Request, res: Response) => {
   try {
     //check if user exists
     const user = await UserModel.findOne({ fullName, email, phone });
-    if (user) {
+    if (!user) {
       return res.status(400).json({ type: UserErrors.FULLNAME_TAKEN });
     }
     //password hashing
