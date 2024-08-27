@@ -12,6 +12,14 @@
   justify-content: space-between;
   margin-bottom: 20px;
 }
+.required {
+  color: rgb(187, 69, 89);
+}
+.form-group{
+  text-align: left;
+  color: lightslategray;
+  font-size: 17px;
+}
 
 .auth-header h2 {
   cursor: pointer;
@@ -56,17 +64,86 @@ input {
   align-items: center;
 }
 
-button {
-  padding: 10px 20px;
-  background-color: #000;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-}
 
 .forgot-password {
   color: #888;
   text-decoration: none;
+}
+.auth {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ddd;
+}
+.tab {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent; /* Sets up a default transparent underline */
+  color: black; /* Ensures text color is black */
+  outline: none; /* Removes the focus outline */
+}
+.tab.active {
+  border-bottom: 2px solid #000; /* Adds black underline for the active tab */
+  color: black; /* Keeps the text color black */
+}
+.tab.inactive {
+  color: #888; /* Lightens the text color for inactive tabs */
+}
+.form-group label {
+  font-size: 1rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+.auth-button {
+  background-color: #000;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+.auth-button::after {
+  content: '→';
+  margin-left: 10px;
+}
+.forgot-password {
+  margin-top: 10px;
+  text-align: right;
+  font-size: 0.9rem;
+  color: #666;
+  text-decoration: none;
+}
+.forgot-password:hover {
+  text-decoration: underline;
+}
+@media (max-width: 480px) {
+  .auth {
+      width: 100%;
+      padding: 15px;
+  }
 }

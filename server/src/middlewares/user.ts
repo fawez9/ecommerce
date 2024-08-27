@@ -22,21 +22,14 @@ export const verifyAdmin = (req: Request, res: Response, next: NextFunction) => 
       if (err) {
         return res.sendStatus(403);
       }
-<<<<<<< HEAD
       if (user && typeof user === 'object' && 'isAdmin' in user) {
-=======
-      if (user) {
->>>>>>> upstream/master
         if (user.isAdmin) {
           next();
         } else {
           return res.sendStatus(403);
         }
-<<<<<<< HEAD
       } else {
         return res.sendStatus(403); // or handle the case where user is not an object with isAdmin property
-=======
->>>>>>> upstream/master
       }
     });
   } else {

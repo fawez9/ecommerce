@@ -1,13 +1,31 @@
-<<<<<<< HEAD
-import React from "react";
-import "./styles.css";
-import { useState, SyntheticEvent } from "react"; 
+import "./style.css";
+import { useState, SyntheticEvent} from "react";
 import axios from "axios";
-import { UserErrors } from "../../errors.ts";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import { UserErrors } from "../../errors";
 export const AuthPage = () => {
-    return <div className="auth">
-        <Register/> <Login/>
-    </div>;
+  const [isLogin, setIsLogin] = useState(true);
+
+  return (
+      <div className="auth">
+          <div className="tabs">
+              <button
+                  className={`tab ${isLogin ? "active" : ""}`}
+                  onClick={() => setIsLogin(true)}
+              >
+                  S'identifier
+              </button>
+              <button
+                  className={`tab ${!isLogin ? "active" : ""}`}
+                  onClick={() => setIsLogin(false)}
+              >
+                  S'inscrire
+              </button>
+          </div>
+          {isLogin ? <Login /> : <Register />}
+      </div>
+  );
 };
 
 
@@ -32,8 +50,10 @@ const Register = () => {
         } catch (error) {
             if(error?.response?.data?.type === UserErrors.USERNAME_ALREADY_EXISTS){
                 alert("ERROR: Username already exists");
-            }else{
-                alert("ERROR: something went wrong");
+            }else if (error?.response?.data?.type === UserErrors.EMAIL_TAKEN){ 
+                alert("ERROR: Email already taken");
+            }else if(error?.response?.data?.type === UserErrors.PHONE_TAKEN){
+                alert("ERROR: Phone already taken");
             }
         }
 
@@ -42,97 +62,84 @@ const Register = () => {
 
     return (<div className="auth-container">
         <form onSubmit={handleSubmit}>
-            <h2>Register</h2>
             <div className="form-group">
-                <label htmlFor="username">Username:</label>
-                <input type="text" id="username" value={username} onChange={(event) => setUsername(event.target.value)} />
+                <label htmlFor="username">Username:<span className="required">*</span></label>
+                <input type="text" id="username" value={username} required onChange={(event) => setUsername(event.target.value)} />
             </div>
             <div className="form-group">
-                <label htmlFor="password">Password:</label>
-                <input type="password" id="password" value={password} onChange={(event) => setPassword(event.target.value)}/>
+                <label htmlFor="password">Password:<span className="required">*</span></label>
+                <input type="password" id="password" value={password} required onChange={(event) => setPassword(event.target.value)}/>
             </div>
             <div className="form-group">
-                <label htmlFor="email">Email:</label>
-                <input type="email" id="email" value={email} onChange={(event) => setEmail(event.target.value)}/>
+                <label htmlFor="email">Email:<span className="required">*</span></label>
+                <input type="email" id="email" value={email} required onChange={(event) => setEmail(event.target.value)}/>
             </div>
             <div className="form-group">
-                <label htmlFor="phone">Phone:</label>
-                <input type="text" id="phone" value={phone} onChange={(event) => setPhone(event.target.value)}/>
+                <label htmlFor="phone">Phone:<span className="required">*</span></label>
+                <input type="text" id="phone" value={phone} required onChange={(event) => setPhone(event.target.value)}/>
             </div>
             <div className="form-group">
                 <label htmlFor="address">Address:</label>
                 <input type="text" id="address" value={address} onChange={(event) => setAddress(event.target.value)}/>
             </div>
-            <button type="submit">Register</button>
+            <button type="submit" className="auth-button">Register</button>
         </form>
     </div>
     );
 };
 const Login = () => {
-    return <div>login</div>; 
-}
-=======
-import { useState } from "react";
+  const [_, setCookies] = useCookies(["access_token"]);
 
-import "./style.css";
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-export const AuthPage = () => {
-  const [isRegisterForm, setIsRegisterForm] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const result = await axios.post("http://localhost:3001/auth/login", {
+        username,
+        password,
+      });
+
+      setCookies("access_token", result.data.token);
+      window.localStorage.setItem("userID", result.data.userID);
+      navigate("/");
+    } catch (err) {
+      let errorMessage: string = "";
+      switch (err.response.data.type) {
+        case UserErrors.USERNAME_ALREADY_EXISTS:
+          errorMessage = "User already exists";
+          break;
+        case UserErrors.WRONG_CREDENTIALS:
+          errorMessage = "Wrong username/password combination";
+          break;
+        default:
+          errorMessage = "Something went wrong";
+      }
+
+      alert("ERROR: " + errorMessage);
+    }
+  };
 
   return (
-    <div className="auth-container">
-      <div className="auth-header">
-        <h2 className={!isRegisterForm ? "active" : "inactive"} onClick={() => setIsRegisterForm(false)}>
-          Login
-        </h2>
-        <h2 className={isRegisterForm ? "active" : "inactive"} onClick={() => setIsRegisterForm(true)}>
-          Register
-        </h2>
-      </div>
-      {isRegisterForm ? <RegisterForm /> : <LoginForm />}
-    </div>
-  );
-};
-
-const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  return (
-    <form className="auth-form">
-      <div className="form-group">
-        <label htmlFor="email">E-mail *</label>
-        <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      </div>
-      <div className="form-group">
-        <label htmlFor="password">Mot de passe *</label>
-        <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-      </div>
-      <div className="form-actions">
-        <button type="submit">Login →</button>
-      </div>
+    <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+            <label htmlFor="email">Username *</label>
+            <input type="text" id="username" required />
+        </div>
+        <div className="form-group">
+            <label htmlFor="password">Mot de passe *</label>
+            <input type="password" id="password" required />
+        </div>
+        <button type="submit" className="auth-button">
+            Connexion 
+        </button>
+        <a href="#" className="forgot-password">
+            Mot de passe oublié?
+        </a>
     </form>
-  );
+);
 };
-
-const RegisterForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  return (
-    <form className="auth-form">
-      <div className="form-group">
-        <label htmlFor="email">E-mail *</label>
-        <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      </div>
-      <div className="form-group">
-        <label htmlFor="password">Mot de passe *</label>
-        <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-      </div>
-      <div className="form-actions">
-        <button type="submit">Register →</button>
-      </div>
-    </form>
-  );
-};
->>>>>>> upstream/master

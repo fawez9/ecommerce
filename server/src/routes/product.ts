@@ -22,8 +22,6 @@ router.get("/:id", async (req: Request, res: Response) => {
     res.status(400).json({ err });
   }
 });
-<<<<<<< HEAD
-=======
 
 router.post("/", verifyAdmin, async (req: Request, res: Response) => {
   const { productName, regularPrice, salePrice, stockQuantity, img1, img2, img3, description } = req.body;
@@ -46,7 +44,6 @@ router.post("/", verifyAdmin, async (req: Request, res: Response) => {
 });
 
 //order product
->>>>>>> upstream/master
 router.post("/order", async (req: Request, res: Response) => {
   const { customerID, cartItems } = req.body;
   try {
