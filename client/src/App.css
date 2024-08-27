@@ -1,0 +1,125 @@
+/* General Styling */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif; /* Modern font */
+  background-color: #f5f5f5; /* Light background for contrast */
+  color: #333; /* Softer text color */
+}
+
+/* App Container */
+.App {
+  text-align: center;
+  padding: 20px;
+  margin-top: 70px; /* Adjust this to match the height of the navbar */
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #131313; /* Darker and richer color */
+  color: #fff;
+  padding: 15px 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; /* Ensure it spans full width */
+  z-index: 1000;
+  height: 60px;
+}
+
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  margin-left: 30px;
+  transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #cccccc;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  cursor: pointer;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background-color: #fff;
+  margin: 4px;
+  transition: all 0.3s ease;
+}
+
+/* Side Menu Styling */
+.sideMenu {
+  height: 100%; /* Full height */
+  width: 0; /* Initial hidden state */
+  position: fixed;
+  top: 0;
+  right: 0; /* Positioned on the right side */
+  background-color: #131313;
+  overflow-x: hidden; /* Disable horizontal scrolling */
+  transition: 0.3s;
+  padding-top: 60px; /* Ensure it starts below the navbar */
+  z-index: 2000; /* Above other elements */
+}
+
+.sideMenu a {
+  padding: 10px 20px;
+  text-decoration: none;
+  font-size: 18px;
+  color: white;
+  display: block;
+  text-align: left;
+  transition: color 0.3s ease;
+}
+
+.sideMenu a:hover {
+  color: #cccccc;
+}
+
+.closeIcon {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+}
+
+/* Show side menu when triggered */
+.sideMenu.show {
+  width: 250px; /* Set the width when open */
+}
+
+/* Mobile-specific styling */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block; /* Show hamburger menu on mobile */
+  }
+
+  .links {
+    display: none; /* Hide regular links */
+  }
+
+  .App {
+    margin-top: 120px; /* Extra margin for mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .App {
+    margin-top: 140px; /* Extra margin for very small devices */
+  }
+}
