@@ -2,15 +2,9 @@ export enum UserErrors {
   NO_USER_FOUND = "NO_USER_FOUND",
   WRONG_CREDENTIALS = "WRONG_CREDENTIALS",
   FULLNAME_TAKEN = "FULLNAME_TAKEN",
-<<<<<<< HEAD
-
-=======
->>>>>>> d30f7af (update)
   EMAIL_TAKEN = "EMAIL_TAKEN",
   PHONE_TAKEN = "PHONE_TAKEN",
   USERNAME_ALREADY_EXISTS = "USERNAME_ALREADY_EXISTS",
-
-
 }
 
 export enum ProductErrors {
