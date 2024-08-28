@@ -10,6 +10,7 @@ router.post("/register", async (req: Request, res: Response) => {
   const { fullName, password, email, phone, address } = req.body;
   try {
     //check if user exists
+
     const Username = await UserModel.findOne({ fullName});
     const Email = await UserModel.findOne({ email });
     const Phone = await UserModel.findOne({ phone });

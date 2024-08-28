@@ -1,3 +1,4 @@
+
 import "./style.css";
 import { useState, SyntheticEvent} from "react";
 import axios from "axios";
@@ -25,11 +26,12 @@ export const AuthPage = () => {
           </div>
           {isLogin ? <Login /> : <Register />}
       </div>
+
   );
 };
 
-
 const Register = () => {
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -57,7 +59,24 @@ const Register = () => {
             }
         }
 
+
+    try {
+      await axios.post("http://localhost:3001/user/register", {
+        fullName: username,
+        password,
+        email,
+        phone,
+        address,
+      });
+      alert("Registration successful, Now you can login");
+    } catch (error) {
+      if (error?.response?.data?.type === UserErrors.FULLNAME_TAKEN) {
+        alert("ERROR: Username already exists");
+      } else {
+        alert("ERROR: something went wrong");
+      }
     }
+
 
 
     return (<div className="auth-container">
@@ -142,4 +161,5 @@ const Login = () => {
         </a>
     </form>
 );
+
 };

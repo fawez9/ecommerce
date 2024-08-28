@@ -23,6 +23,7 @@ router.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
+
 router.post("/", verifyAdmin, async (req: Request, res: Response) => {
   const { productName, regularPrice, salePrice, stockQuantity, img1, img2, img3, description } = req.body;
   try {
@@ -44,6 +45,7 @@ router.post("/", verifyAdmin, async (req: Request, res: Response) => {
 });
 
 //order product
+
 router.post("/order", async (req: Request, res: Response) => {
   const { customerID, cartItems } = req.body;
   try {
