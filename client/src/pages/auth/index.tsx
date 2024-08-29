@@ -30,6 +30,8 @@ const Register = () => {
   const [phone, setPhone] = useState<string>("");
   const [address, setAddress] = useState<string>("");
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (event: SyntheticEvent) => {
     event.preventDefault();
 
@@ -42,6 +44,7 @@ const Register = () => {
         address,
       });
       alert("Registration successful, Now you can login");
+      navigate("/auth");
     } catch (error) {
       const errorType = error?.response?.data?.type;
       switch (errorType) {

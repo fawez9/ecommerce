@@ -1,13 +1,31 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faUser, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
+  const [cookies] = useCookies(["access_token"]);
+  const navigate = useNavigate();
+
+  const checkAuth = () => {
+    const token = cookies.access_token;
+    setIsAuth(!!token);
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, [cookies]);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prevState) => !prevState);
+  };
+
+  const handleLogout = () => {
+    setIsAuth(false);
+    navigate("/auth");
   };
 
   return (
@@ -22,9 +40,20 @@ export const Navbar = () => {
           <Link to="/order">
             <FontAwesomeIcon icon={faShoppingCart} />
           </Link>
-          <Link to="/auth">
-            <FontAwesomeIcon icon={faUser} />
-          </Link>
+          {isAuth ? (
+            <div>
+              <Link to="/profile">
+                <FontAwesomeIcon icon={faUser} />
+              </Link>
+              <button onClick={handleLogout} className="logout-button">
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link to="/auth">
+              <FontAwesomeIcon icon={faUser} />
+            </Link>
+          )}
         </div>
         <div className="hamburger" onClick={toggleMenu}>
           <FontAwesomeIcon icon={faBars} />
@@ -44,9 +73,25 @@ export const Navbar = () => {
         <Link to="/order" onClick={() => setIsOpen(false)}>
           Cart
         </Link>
-        <Link to="/auth" onClick={() => setIsOpen(false)}>
-          Login
-        </Link>
+        {isAuth ? (
+          <>
+            <Link to="/profile" onClick={() => setIsOpen(false)}>
+              Profile
+            </Link>
+            <button
+              onClick={() => {
+                handleLogout();
+                setIsOpen(false);
+              }}
+              className="logout-button">
+              Logout
+            </button>
+          </>
+        ) : (
+          <Link to="/auth" onClick={() => setIsOpen(false)}>
+            Login
+          </Link>
+        )}
       </div>
     </>
   );

@@ -1,7 +1,3 @@
-.App {
-  text-align: center;
-}
-
 /* General Styling */
 * {
   box-sizing: border-box;
@@ -10,16 +6,16 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Poppins", sans-serif; /* Modern font */
-  background-color: #f5f5f5; /* Light background for contrast */
-  color: #333; /* Softer text color */
+  font-family: "Poppins", sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
 }
 
 /* App Container */
 .App {
   text-align: center;
   padding: 20px;
-  margin-top: 70px; /* Adjust this to match the height of the navbar */
+  margin-top: 70px; /* Adjust as necessary */
 }
 
 /* Navbar */
@@ -27,28 +23,52 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #131313; /* Darker and richer color */
+  background-color: #131313;
   color: #fff;
   padding: 15px 30px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%; /* Ensure it spans full width */
+  width: 100%;
   z-index: 1000;
   height: 60px;
+}
+
+/* Navbar Links */
+.navbar .links {
+  display: flex;
+  align-items: center;
 }
 
 .navbar a {
   color: #fff;
   text-decoration: none;
   font-size: 18px;
-  margin-left: 30px;
+  margin-left: 20px;
   transition: color 0.3s ease;
 }
 
 .navbar a:hover {
   color: #cccccc;
+}
+
+/* Logout Button */
+.navbar .logout-button {
+  background-color: #ffffff;
+  color: #131313;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+  margin-left: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar .logout-button:hover {
+  background-color: #f0f0f0;
+  color: #000000;
 }
 
 /* Hamburger Menu */
@@ -67,16 +87,16 @@ body {
 
 /* Side Menu Styling */
 .sideMenu {
-  height: 100%; /* Full height */
-  width: 0; /* Initial hidden state */
+  height: 100%;
+  width: 0;
   position: fixed;
   top: 0;
-  right: 0; /* Positioned on the right side */
+  right: 0;
   background-color: #131313;
-  overflow-x: hidden; /* Disable horizontal scrolling */
+  overflow-x: hidden;
   transition: 0.3s;
-  padding-top: 60px; /* Ensure it starts below the navbar */
-  z-index: 2000; /* Above other elements */
+  padding-top: 60px;
+  z-index: 2000;
 }
 
 .sideMenu a {
@@ -93,6 +113,23 @@ body {
   color: #cccccc;
 }
 
+.sideMenu .logout-button {
+  background-color: #ffffff;
+  color: #131313;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 4px;
+  margin: 10px 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sideMenu .logout-button:hover {
+  background-color: #f0f0f0;
+  color: #000000;
+}
+
 .closeIcon {
   position: absolute;
   top: 20px;
@@ -104,26 +141,34 @@ body {
 
 /* Show side menu when triggered */
 .sideMenu.show {
-  width: 250px; /* Set the width when open */
+  width: 250px;
 }
 
 /* Mobile-specific styling */
 @media (max-width: 768px) {
+  .navbar .links {
+    display: none; /* Hide links in mobile view */
+  }
+
   .hamburger {
-    display: block; /* Show hamburger menu on mobile */
+    display: block; /* Show hamburger menu in mobile view */
   }
 
-  .links {
-    display: none; /* Hide regular links */
-  }
-
-  .App {
-    margin-top: 120px; /* Extra margin for mobile */
+  .sideMenu {
+    width: 0; /* Hide side menu initially */
   }
 }
 
-@media (max-width: 480px) {
-  .App {
-    margin-top: 140px; /* Extra margin for very small devices */
+@media (min-width: 769px) {
+  .sideMenu {
+    display: none; /* Hide side menu in desktop view */
+  }
+
+  .navbar .links {
+    display: flex; /* Show links in desktop view */
+  }
+
+  .hamburger {
+    display: none; /* Hide hamburger menu in desktop view */
   }
 }
