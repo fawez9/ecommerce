@@ -1,30 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faUser, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 
-export const Navbar = () => {
+interface NavbarProps {
+  onLogout: () => void;
+  isAuth: boolean;
+}
+
+export const Navbar = ({ onLogout, isAuth }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
-  const [cookies] = useCookies(["access_token"]);
   const navigate = useNavigate();
-
-  const checkAuth = () => {
-    const token = cookies.access_token;
-    setIsAuth(!!token);
-  };
-
-  useEffect(() => {
-    checkAuth();
-  }, [cookies]);
 
   const toggleMenu = () => {
     setIsOpen((prevState) => !prevState);
   };
 
   const handleLogout = () => {
-    setIsAuth(false);
+    onLogout(); // Call the callback function to update the isAuth state in the App component
     navigate("/auth");
   };
 
