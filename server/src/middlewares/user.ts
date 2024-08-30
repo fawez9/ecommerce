@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
+
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
@@ -25,7 +26,7 @@ export const verifyAdmin = (req: Request, res: Response, next: NextFunction) => 
 
       if (user) {
 
-        if (user.isAdmin) {
+        if (typeof user === 'object' && 'isAdmin' in user && user.isAdmin) {
           next();
         } else {
           return res.sendStatus(403);
