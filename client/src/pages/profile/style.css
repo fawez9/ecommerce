@@ -1,0 +1,120 @@
+/* Profile Page Container */
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Alert Styling */
+.alert {
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #ffdddd;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  color: #d8000c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alert button {
+  background: none;
+  border: none;
+  color: #d8000c;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Form Group Styling */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Buttons */
+button {
+  padding: 10px 15px;
+  border: 1px solid #000000; /* Border color */
+  border-radius: 4px;
+  color: #161616; /* Text color */
+  background-color: #ffffff; /* Button background color */
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+  transition: all 0.3s;
+}
+
+button:hover {
+  background-color: #000000; /* Background color on hover */
+  color: #ffffff; /* Text color on hover */
+  border-color: #000000; /* Border color on hover */
+}
+
+button.cancel {
+  border-color: #3c4044; /* Border color */
+  color: #6c757d; /* Text color */
+}
+
+button.cancel:hover {
+  background-color: #6c757d; /* Background color on hover */
+  color: #ffffff; /* Text color on hover */
+  border-color: #6c757d; /* Border color on hover */
+}
+
+/* User Info Display */
+h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+/* Edit Button */
+button.edit {
+  border-color: #28a745; /* Border color */
+  color: #28a745; /* Text color */
+}
+
+button.edit:hover {
+  background-color: #28a745; /* Background color on hover */
+  color: #ffffff; /* Text color on hover */
+  border-color: #28a745; /* Border color on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .profile-container {
+    padding: 10px;
+  }
+
+  button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+}

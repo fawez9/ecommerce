@@ -25,11 +25,12 @@ export const Navbar = ({ onLogout, isAuth }: NavbarProps) => {
     <>
       <div className="navbar">
         <div className="title">
-          <h1>Tattoo Shop</h1>
+          <Link to="/">
+            <h1>Tattoo Shop</h1>
+          </Link>
         </div>
         <div className="links">
-          <Link to="/">Home</Link>
-          <Link to="/product">Products</Link>
+          <Link to="/">Accueil</Link>
           <Link to="/order">
             <FontAwesomeIcon icon={faShoppingCart} />
           </Link>
@@ -58,10 +59,7 @@ export const Navbar = ({ onLogout, isAuth }: NavbarProps) => {
           <FontAwesomeIcon icon={faTimes} />
         </div>
         <Link to="/" onClick={() => setIsOpen(false)}>
-          Home
-        </Link>
-        <Link to="/product" onClick={() => setIsOpen(false)}>
-          Products
+          Accueil
         </Link>
         <Link to="/order" onClick={() => setIsOpen(false)}>
           Cart

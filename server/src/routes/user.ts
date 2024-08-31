@@ -4,6 +4,7 @@ import { UserErrors } from "../errors";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { verifyToken } from "../middlewares/user";
+
 const router = Router();
 
 router.post("/register", async (req: Request, res: Response) => {
@@ -56,44 +57,48 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/profile", verifyToken, async (req: Request, res: Response) => {
-  const { id } = req.body;
+router.get("/profile/:userID", verifyToken, async (req: Request, res: Response) => {
+  const { userID } = req.params;
   try {
-    const user = await UserModel.findById(id);
-    res.json({ user });
-  } catch (err) {
-    res.status(400).json({ err });
-  }
-});
-router.put("/profile", verifyToken, async (req: Request, res: Response) => {
-  const { id } = req.body;
-  const { fullName, password, email, phone, address } = req.body;
-  try {
-    const user = await UserModel.findById(id);
+    const user = await UserModel.findById(userID);
     if (!user) {
-      return res.status(400).json({ type: UserErrors.NO_USER_FOUND });
+      return res.status(404).json({ type: UserErrors.NO_USER_FOUND });
     }
-    if (fullName) {
-      user.fullName = fullName;
-    }
-    if (password) {
-      user.password = password;
-    }
-    if (email) {
-      user.email = email;
-    }
-    if (phone) {
-      user.phone = phone;
-    }
-    if (address) {
-      user.address = address;
-    }
-    await user.save();
-    res.json({ message: "User Updated Successfully" });
+    res.json({ user });
   } catch (err) {
     res.status(500).json({ type: err });
   }
 });
+
+router.put("/profile/:userID", verifyToken, async (req: Request, res: Response) => {
+  const { userID } = req.params;
+  const { fullName, email, phone, address, currentPassword, newPassword } = req.body;
+
+  try {
+    const user = await UserModel.findById(userID);
+    if (!user) return res.status(404).json({ type: UserErrors.NO_USER_FOUND });
+
+    // Check for password update
+    if (currentPassword && newPassword) {
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) return res.status(400).json({ type: UserErrors.WRONG_CREDENTIALS });
+
+      user.password = await bcrypt.hash(newPassword, 12); // Hash new password
+    }
+
+    // Update other user fields
+    if (fullName) user.fullName = fullName;
+    if (email) user.email = email;
+    if (phone) user.phone = phone;
+    if (address) user.address = address;
+
+    await user.save();
+    res.json({ message: "User Updated Successfully" });
+  } catch (err) {
+    res.status(500).json({ type: err.message });
+  }
+});
+
 router.delete("/profile", verifyToken, async (req: Request, res: Response) => {
   const { id } = req.body;
   try {

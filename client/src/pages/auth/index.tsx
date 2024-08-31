@@ -5,7 +5,6 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { UserErrors } from "../../errors";
 
-
 export const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
 

@@ -15,7 +15,7 @@
 .required {
   color: rgb(187, 69, 89);
 }
-.form-group{
+.form-group {
   text-align: left;
   color: lightslategray;
   font-size: 17px;
@@ -64,7 +64,6 @@ input {
   align-items: center;
 }
 
-
 .forgot-password {
   color: #888;
   text-decoration: none;
@@ -98,6 +97,10 @@ input {
   border-bottom: 2px solid #000; /* Adds black underline for the active tab */
   color: black; /* Keeps the text color black */
 }
+.tab:hover {
+  color: #faf9f9; /* Darkens the text color for hover */
+  background-color: #000; /* Darkens the background color for hover */
+}
 .tab.inactive {
   color: #888; /* Lightens the text color for inactive tabs */
 }
@@ -128,7 +131,7 @@ input {
   justify-content: center;
 }
 .auth-button::after {
-  content: '→';
+  content: "→";
   margin-left: 10px;
 }
 .forgot-password {
@@ -143,7 +146,7 @@ input {
 }
 @media (max-width: 480px) {
   .auth {
-      width: 100%;
-      padding: 15px;
+    width: 100%;
+    padding: 15px;
   }
 }

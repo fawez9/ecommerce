@@ -4,6 +4,7 @@ export interface IUser {
   _id?: string;
   fullName: string;
   password: string;
+  imgURL?: string;
   email: string;
   phone: string;
   address: string;
@@ -14,6 +15,7 @@ export interface IUser {
 const UserSchema = new Schema<IUser>({
   fullName: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  imgURL: { type: String }, // TODO add image upload
   email: { type: String, required: true },
   phone: { type: String, required: true, unique: true },
   address: { type: String },
