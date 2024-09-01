@@ -40,6 +40,9 @@ body {
   display: flex;
   align-items: center;
 }
+.title {
+  margin-top: -25px;
+}
 
 .navbar a {
   color: #fff;

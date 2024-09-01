@@ -1,12 +1,23 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useCookies } from "react-cookie";
 import { useGetToken } from "../../hooks/useGetToken";
 import "./style.css"; // Import the CSS file
 import { UserErrors } from "../../errors";
 
+interface User {
+  _id?: string;
+  fullName: string;
+  password: string;
+  imgURL?: string;
+  email: string;
+  phone: string;
+  address: string;
+  isAdmin: boolean;
+  purchasedItems: string[];
+}
+
 export const ProfilePage = () => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User>(null);
   const [editMode, setEditMode] = useState(false);
   const [passwordMode, setPasswordMode] = useState(false);
   const [formData, setFormData] = useState({
@@ -45,7 +56,7 @@ export const ProfilePage = () => {
 
   useEffect(() => {
     fetchUser();
-  }, [userID]);
+  }, []);
 
   useEffect(() => {
     if (alertMessage) {
