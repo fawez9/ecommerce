@@ -118,3 +118,66 @@ button.edit:hover {
     font-size: 14px;
   }
 }
+
+/* Purchase History Section */
+.purchase-history {
+  margin-top: 20px;
+}
+
+.purchase-history h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+}
+
+/* Purchased Items List */
+.purchase-history ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.purchase-history li {
+  display: flex;
+  align-items: flex-start;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Product Image */
+.purchase-history img {
+  max-width: 100px;
+  height: auto;
+  border-radius: 4px;
+  margin-right: 15px;
+}
+
+/* Product Details */
+.purchase-history .product-details {
+  flex: 1;
+}
+
+/* Product Name */
+.purchase-history .product-details h3 {
+  font-size: 18px;
+  margin: 0 0 10px;
+}
+
+/* Product Price */
+.purchase-history .product-details p.price {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+/* Product Description */
+.purchase-history .product-details p.description {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0;
+}

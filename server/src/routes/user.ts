@@ -4,6 +4,7 @@ import { UserErrors } from "../errors";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { verifyToken } from "../middlewares/user";
+import { ProductModel } from "../models/product";
 
 const router = Router();
 
@@ -104,6 +105,27 @@ router.delete("/profile", verifyToken, async (req: Request, res: Response) => {
   try {
     const user = await UserModel.findByIdAndDelete(id);
     res.json({ message: "User Deleted Successfully" });
+  } catch (err) {
+    res.status(500).json({ type: err });
+  }
+});
+
+router.get("/purchased-items/:userID", async (req: Request, res: Response) => {
+  const { userID } = req.params;
+  try {
+    const user = await UserModel.findById(userID);
+    if (!user) {
+      return res.status(404).json({ type: UserErrors.NO_USER_FOUND });
+    }
+
+    const purchasedItems = user.purchasedItems;
+    const products = await Promise.all(
+      purchasedItems.map(async (itemId) => {
+        const product = await ProductModel.findById(itemId);
+        return product;
+      })
+    );
+    res.json({ products });
   } catch (err) {
     res.status(500).json({ type: err });
   }
