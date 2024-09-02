@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
-
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
-    jwt.verify(authHeader, process.env.JWT_SECRET, (err) => {
+    jwt.verify(authHeader, process.env.JWT_SECRET, (err, user: JwtPayload) => {
       if (err) {
         return res.sendStatus(403);
       }
+      req.user = user; // This should be okay now
       next();
     });
   } else {
@@ -19,22 +19,14 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
 export const verifyAdmin = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
-    jwt.verify(authHeader, process.env.JWT_SECRET, (err, user) => {
+    jwt.verify(authHeader, process.env.JWT_SECRET, (err, user: JwtPayload) => {
       if (err) {
         return res.sendStatus(403);
       }
-
-      if (user) {
-
-        if (typeof user === 'object' && 'isAdmin' in user && user.isAdmin) {
-          next();
-        } else {
-          return res.sendStatus(403);
-        }
-
+      if (user && typeof user === "object" && "isAdmin" in user && user.isAdmin) {
+        next();
       } else {
-        return res.sendStatus(403); // or handle the case where user is not an object with isAdmin property
-
+        return res.sendStatus(403);
       }
     });
   } else {

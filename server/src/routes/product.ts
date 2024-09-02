@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import { ProductModel } from "../models/product";
 import { UserModel } from "../models/user";
 import { ProductErrors } from "../errors";
-import { verifyAdmin } from "../middlewares/user";
+import { verifyAdmin, verifyToken } from "../middlewares/user";
 const router = Router();
 
 router.get("/", async (req: Request, res: Response) => {
@@ -23,7 +23,7 @@ router.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/", verifyAdmin, async (req: Request, res: Response) => {
+router.post("/", verifyToken, verifyAdmin, async (req: Request, res: Response) => {
   const { productName, regularPrice, salePrice, stockQuantity, img1, img2, img3, description } = req.body;
   try {
     const product = new ProductModel({
@@ -83,7 +83,7 @@ router.post("/order", async (req: Request, res: Response) => {
   }
 });
 
-router.put("/:id", verifyAdmin, async (req: Request, res: Response) => {
+router.put("/:id", verifyToken, verifyAdmin, async (req: Request, res: Response) => {
   const { id } = req.params;
   const { productName, regularPrice, salePrice, stockQuantity, img1, img2, img3, description } = req.body;
   try {
@@ -122,7 +122,7 @@ router.put("/:id", verifyAdmin, async (req: Request, res: Response) => {
   }
 });
 
-router.delete("/:id", verifyAdmin, async (req: Request, res: Response) => {
+router.delete("/:id", verifyToken, verifyAdmin, async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const product = await ProductModel.findByIdAndDelete(id);
