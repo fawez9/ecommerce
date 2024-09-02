@@ -242,7 +242,7 @@ export const ProfilePage = () => {
               <ul>
                 {purchasedItems.map((item) => (
                   <li key={item._id}>
-                    {/* <img src={item.img1} alt={item.productName} />  // Display product image here TODO*/}
+                    {/* <img src={item.img1} alt={item.productName} />  // TODO IMG UPLOADING */}
                     <div className="product-details">
                       <h3>{item.productName}</h3>
                       <p className="price">{item.salePrice ? `$${item.salePrice.toFixed(2)}` : `$${item.regularPrice.toFixed(2)}`}</p>

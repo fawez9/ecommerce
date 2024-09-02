@@ -5,16 +5,25 @@ import { AuthPage } from "./pages/auth";
 import { OrderPage } from "./pages/order";
 import { HomePage } from "./pages/home";
 import { ProfilePage } from "./pages/profile";
+import { AdminPage } from "./pages/admin"; // New import
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { jwtDecode } from "jwt-decode";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false); // New state for admin check
   const [cookies, setCookie, removeCookie] = useCookies(["access_token"]);
 
   const checkAuth = () => {
     const token = cookies.access_token;
     setIsAuth(!!token);
+
+    // Check if the user is an admin
+    if (token) {
+      const decodedToken = jwtDecode<{ isAdmin: boolean }>(token); // Decode JWT token to get admin status
+      setIsAdmin(decodedToken.isAdmin);
+    }
   };
 
   useEffect(() => {
@@ -24,6 +33,7 @@ function App() {
   const handleLogout = () => {
     removeCookie("access_token");
     setIsAuth(false);
+    setIsAdmin(false);
   };
 
   return (
@@ -36,6 +46,7 @@ function App() {
           {isAuth ? (
             <>
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/admin" element={isAdmin ? <AdminPage /> : <Navigate to="/" />} /> {/* Admin route */}
               <Route path="/auth" element={<Navigate to="/" />} />
             </>
           ) : (

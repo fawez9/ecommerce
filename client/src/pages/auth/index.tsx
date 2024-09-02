@@ -44,7 +44,7 @@ const Register = () => {
         address,
       });
       alert("Registration successful, Now you can login");
-      navigate("/auth");
+      window.location.reload();
     } catch (error) {
       const errorType = error?.response?.data?.type;
       switch (errorType) {
