@@ -6,21 +6,30 @@ import { faShoppingCart, faBars, faTimes, faChevronDown, faUser } from "@fortawe
 interface NavbarProps {
   onLogout: () => void;
   isAuth: boolean;
-  userName?: string; // Username for authenticated user
+  userName?: string;
   isAdmin?: boolean;
 }
 
 export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false); // State to control cart drawer
   const navigate = useNavigate();
 
+
+  const handleOrderClick = () => {
+    navigate("/order");
+  };
   const toggleMenu = () => {
     setIsOpen((prevState) => !prevState);
   };
 
+  const toggleCart = () => {
+    setIsCartOpen((prevState) => !prevState);
+  };
+
   const handleLogout = () => {
-    onLogout(); // Call the callback function to update the isAuth state in the App component
+    onLogout();
     navigate("/auth");
   };
 
@@ -35,12 +44,10 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
         <div className="links">
           <Link to="/">Accueil</Link>
           {!isAdmin && (
-            <Link to="/order">
+            <div className="cart-icon" onClick={toggleCart}>
               <FontAwesomeIcon icon={faShoppingCart} />
-            </Link>
+            </div>
           )}
-          {/* remove if not needed <------------ */}
-
           {isAuth ? (
             <div className="user-dropdown" onMouseEnter={() => setIsDropdownOpen(true)} onMouseLeave={() => setIsDropdownOpen(false)}>
               <button className="user-button">
@@ -48,7 +55,8 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
               </button>
               {isDropdownOpen && (
                 <div className="dropdown-menu">
-                  <Link to="/profile">Your profile</Link>({isAdmin && <Link to="/admin">Admin</Link>})
+                  <Link to="/profile">Your profile</Link>
+                  {isAdmin && <Link to="/admin">Admin</Link>}
                   <div onClick={handleLogout} className="logout-button">
                     Logout
                   </div>
@@ -57,7 +65,6 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
             </div>
           ) : (
             <Link to="/auth">
-              {/* Show login/signup icon only when not authenticated */}
               <FontAwesomeIcon icon={faUser} />
             </Link>
           )}
@@ -66,6 +73,25 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
           <FontAwesomeIcon icon={faBars} />
         </div>
       </div>
+
+      {/* Side Cart Drawer */}
+      <div className={`cart-drawer ${isCartOpen ? "open" : ""}`}>
+        <div className="cart-drawer-header">
+          <h2>Votre Panier</h2>
+          <FontAwesomeIcon icon={faTimes} onClick={toggleCart} className="close-icon" />
+        </div>
+        <div className="cart-content">
+          <p>Votre panier est vide!</p>
+          {/* Add your cart items here */}
+        </div>
+        <div className="cart-summary">
+          <button className="checkout-button" onClick={handleOrderClick}>Valider mes achats →</button>
+          <button className="checkout-button">Vider mon panier</button>
+        </div>
+      </div>
+
+      {/* Backdrop */}
+      <div className={`backdrop ${isCartOpen ? "show" : ""}`} onClick={toggleCart}></div>
 
       <div className={`sideMenu ${isOpen ? "show" : ""}`}>
         <div className="closeIcon" onClick={toggleMenu}>
