@@ -8,7 +8,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
       if (err) {
         return res.sendStatus(403);
       }
-      req.user = user; // This should be okay now
+      req.user = user;
       next();
     });
   } else {
