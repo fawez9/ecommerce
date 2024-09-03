@@ -5,24 +5,24 @@ import { AuthPage } from "./pages/auth";
 import { OrderPage } from "./pages/order";
 import { HomePage } from "./pages/home";
 import { ProfilePage } from "./pages/profile";
-import { AdminPage } from "./pages/admin"; // New import
+import { AdminPage } from "./pages/admin";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false); // New state for admin check
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [userName, setUsername] = useState(""); // New state for username
   const [cookies, setCookie, removeCookie] = useCookies(["access_token"]);
 
   const checkAuth = () => {
     const token = cookies.access_token;
     setIsAuth(!!token);
-
-    // Check if the user is an admin
     if (token) {
-      const decodedToken = jwtDecode<{ isAdmin: boolean }>(token); // Decode JWT token to get admin status
+      const decodedToken = jwtDecode<{ isAdmin: boolean; userName: string }>(token);
       setIsAdmin(decodedToken.isAdmin);
+      setUsername(decodedToken.userName); // Set username from token
     }
   };
 
@@ -32,21 +32,23 @@ function App() {
 
   const handleLogout = () => {
     removeCookie("access_token");
+    localStorage.removeItem("userID");
     setIsAuth(false);
     setIsAdmin(false);
+    setUsername(""); // Clear username on logout
   };
 
   return (
     <div className="App">
       <Router>
-        <Navbar isAuth={isAuth} onLogout={handleLogout} />
+        <Navbar isAuth={isAuth} onLogout={handleLogout} userName={userName} />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/order" element={<OrderPage />} />
           {isAuth ? (
             <>
               <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/admin" element={isAdmin ? <AdminPage /> : <Navigate to="/" />} /> {/* Admin route */}
+              <Route path="/admin" element={isAdmin ? <AdminPage /> : <Navigate to="/" />} />
               <Route path="/auth" element={<Navigate to="/" />} />
             </>
           ) : (

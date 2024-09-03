@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faUser, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faBars, faTimes, faChevronDown, faUser } from "@fortawesome/free-solid-svg-icons";
 
 interface NavbarProps {
   onLogout: () => void;
   isAuth: boolean;
+  userName?: string; // Username for authenticated user
 }
 
-export const Navbar = ({ onLogout, isAuth }: NavbarProps) => {
+export const Navbar = ({ onLogout, isAuth, userName }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -34,17 +36,24 @@ export const Navbar = ({ onLogout, isAuth }: NavbarProps) => {
           <Link to="/order">
             <FontAwesomeIcon icon={faShoppingCart} />
           </Link>
+
           {isAuth ? (
-            <div>
-              <Link to="/profile">
-                <FontAwesomeIcon icon={faUser} />
-              </Link>
-              <button onClick={handleLogout} className="logout-button">
-                Logout
+            <div className="user-dropdown" onMouseEnter={() => setIsDropdownOpen(true)} onMouseLeave={() => setIsDropdownOpen(false)}>
+              <button className="user-button">
+                {userName || "Account"} <FontAwesomeIcon icon={faChevronDown} />
               </button>
+              {isDropdownOpen && (
+                <div className="dropdown-menu">
+                  <Link to="/profile">Your profile</Link>
+                  <div onClick={handleLogout} className="logout-button">
+                    Logout
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <Link to="/auth">
+              {/* Show login/signup icon only when not authenticated */}
               <FontAwesomeIcon icon={faUser} />
             </Link>
           )}

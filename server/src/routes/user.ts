@@ -51,7 +51,7 @@ router.post("/login", async (req: Request, res: Response) => {
     if (!isMatch) {
       return res.status(400).json({ type: UserErrors.WRONG_CREDENTIALS });
     }
-    const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin, userName: user.fullName }, process.env.JWT_SECRET);
     res.json({ token, userID: user._id });
   } catch (err) {
     res.status(500).json({ type: err });
