@@ -41,7 +41,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar isAuth={isAuth} onLogout={handleLogout} userName={userName} />
+        <Navbar isAuth={isAuth} onLogout={handleLogout} userName={userName} isAdmin={isAdmin} />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/order" element={<OrderPage />} />

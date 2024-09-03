@@ -1,3 +1,9 @@
+import { Sidebar } from "../../components/sidebar";
+
 export const AdminPage = () => {
-  return <div>Admin</div>;
+  return (
+    <div className="admin-container">
+      <Sidebar />
+    </div>
+  );
 };

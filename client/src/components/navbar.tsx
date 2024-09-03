@@ -7,9 +7,10 @@ interface NavbarProps {
   onLogout: () => void;
   isAuth: boolean;
   userName?: string; // Username for authenticated user
+  isAdmin?: boolean;
 }
 
-export const Navbar = ({ onLogout, isAuth, userName }: NavbarProps) => {
+export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -33,9 +34,12 @@ export const Navbar = ({ onLogout, isAuth, userName }: NavbarProps) => {
         </div>
         <div className="links">
           <Link to="/">Accueil</Link>
-          <Link to="/order">
-            <FontAwesomeIcon icon={faShoppingCart} />
-          </Link>
+          {!isAdmin && (
+            <Link to="/order">
+              <FontAwesomeIcon icon={faShoppingCart} />
+            </Link>
+          )}
+          {/* remove if not needed <------------ */}
 
           {isAuth ? (
             <div className="user-dropdown" onMouseEnter={() => setIsDropdownOpen(true)} onMouseLeave={() => setIsDropdownOpen(false)}>
@@ -44,7 +48,7 @@ export const Navbar = ({ onLogout, isAuth, userName }: NavbarProps) => {
               </button>
               {isDropdownOpen && (
                 <div className="dropdown-menu">
-                  <Link to="/profile">Your profile</Link>
+                  <Link to="/profile">Your profile</Link>({isAdmin && <Link to="/admin">Admin</Link>})
                   <div onClick={handleLogout} className="logout-button">
                     Logout
                   </div>
