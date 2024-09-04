@@ -3,14 +3,10 @@ import { useGetProducts } from "../../hooks/useGetProducts";
 import "./style.css";
 import { IProduct } from "../../models/interfaces";
 
-
-
-export const HomePage: React.FC = () => {
+export const HomePage = () => {
   const { products, isLoading, error } = useGetProducts();
-  
-  const [cartItems, setCartItems] = useState<{string: number}| {}>({});
-  
-  
+
+  const [cartItems, setCartItems] = useState<{ string: number } | {}>({});
 
   if (isLoading) {
     return <div className="loading">Loading...</div>;
@@ -19,27 +15,23 @@ export const HomePage: React.FC = () => {
   if (error) {
     return <div className="error">{error}</div>;
   }
-  
 
   if (products.length === 0) {
     return <div className="no-products">No products available</div>;
   }
-const addToCart =(itemId: string) => {
-  if(!cartItems[itemId]) {
-      setCartItems((prev) => ({...prev, [itemId]: 1}))
-  }else {
-      setCartItems((prev) => ({...prev, [itemId]: prev[itemId] + 1}))
-  }
-};
-const getCartItemCount = (itemId: string): number => {
-    if (itemId in cartItems) {
-        return cartItems[itemId]
+  const addToCart = (itemId: string) => {
+    if (!cartItems[itemId]) {
+      setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
+    } else {
+      setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
     }
-    return 0
-}
-  
-
-  
+  };
+  const getCartItemCount = (itemId: string): number => {
+    if (itemId in cartItems) {
+      return cartItems[itemId];
+    }
+    return 0;
+  };
 
   const handleBuyClick = (product: IProduct) => {
     // Handle the click event (e.g., redirect to product page, open a modal, etc.) for now we just alert for dev
@@ -52,7 +44,7 @@ const getCartItemCount = (itemId: string): number => {
       <div className="products">
         {products.map((product) => (
           <div key={product._id} className="product-card">
-            {product.salePrice && <div className="sale-banner">On Sale!</div>}
+            {product.salePrice ? <div className="sale-banner">On Sale!</div> : null}
             <img src={product.img1} alt={product.productName} className="product-img" />
             <h2 className="product-name">{product.productName}</h2>
             {product.salePrice ? (
