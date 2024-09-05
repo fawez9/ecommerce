@@ -55,6 +55,7 @@ function App() {
             <>
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/profile" element={<Navigate to="/auth" />} />
+              <Route path="/admin" element={<Navigate to="/auth" />} />
             </>
           )}
         </Routes>
