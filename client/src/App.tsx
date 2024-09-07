@@ -50,19 +50,9 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/order" element={<OrderPage />} />
-          {isAuth ? (
-            <>
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/admin" element={isAdmin ? <AdminPage /> : <Navigate to="/" />} />
-              <Route path="/auth" element={<Navigate to="/" />} />
-            </>
-          ) : (
-            <>
-              <Route path="/auth" element={<AuthPage />} />
-              <Route path="/profile" element={<Navigate to="/auth" />} />
-              <Route path="/admin" element={<Navigate to="/auth" />} />
-            </>
-          )}
+          <Route path="/profile" element={isAuth ? <ProfilePage /> : <Navigate to="/auth" />} />
+          <Route path="/admin" element={isAdmin ? <AdminPage /> : <Navigate to="/auth" />} />
+          <Route path="/auth" element={isAuth ? <Navigate to="/" /> : <AuthPage />} />
         </Routes>
       </Router>
     </div>

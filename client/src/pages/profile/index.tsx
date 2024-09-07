@@ -154,8 +154,8 @@ export const ProfilePage = () => {
   if (!user) return <p>Loading...</p>;
 
   return (
-    <div className="profile-container">
-      <div className="sidebar">
+    <div className="profile-page">
+      <div className="sidebar-profile">
         <button onClick={() => setActiveTab("info")} className={activeTab === "info" ? "active" : ""}>
           User Info
         </button>
@@ -163,7 +163,7 @@ export const ProfilePage = () => {
           Purchase History
         </button>
       </div>
-      <div className="content">
+      <div className="main-content">
         {alertMessage && (
           <div className="alert">
             {alertMessage}
@@ -214,15 +214,17 @@ export const ProfilePage = () => {
                     </div>
                   </>
                 )}
-                <button type="submit">Update</button>
-                <button type="button" className="cancel" onClick={() => setEditMode(false)}>
-                  Cancel
-                </button>
-                {!passwordMode && (
-                  <button type="button" onClick={() => setPasswordMode(true)}>
-                    Change Password
+                <div className="update-button-group">
+                  <button type="submit">Update</button>
+                  <button type="button" className="cancel" onClick={() => setEditMode(false)}>
+                    Cancel
                   </button>
-                )}
+                  {!passwordMode && (
+                    <button type="button" onClick={() => setPasswordMode(true)}>
+                      Change Password
+                    </button>
+                  )}
+                </div>
               </form>
             ) : (
               <div>
@@ -230,7 +232,9 @@ export const ProfilePage = () => {
                 <p>Email: {user.email}</p>
                 <p>Phone: {user.phone}</p>
                 <p>Address: {user.address}</p>
-                <button onClick={() => setEditMode(true)}>Edit</button>
+                <button onClick={() => setEditMode(true)} id="edit-button">
+                  Edit
+                </button>
               </div>
             )}
           </div>
@@ -242,7 +246,6 @@ export const ProfilePage = () => {
               <ul>
                 {purchasedItems.map((item) => (
                   <li key={item._id}>
-                    {/* <img src={item.img1} alt={item.productName} />  // TODO IMG UPLOADING */}
                     <div className="product-details">
                       <h3>{item.productName}</h3>
                       <p className="price">{item.salePrice ? `$${item.salePrice.toFixed(2)}` : `$${item.regularPrice.toFixed(2)}`}</p>

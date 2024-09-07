@@ -16,7 +16,6 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
   const [isCartOpen, setIsCartOpen] = useState(false); // State to control cart drawer
   const navigate = useNavigate();
 
-
   const handleOrderClick = () => {
     navigate("/order");
   };
@@ -85,7 +84,9 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
           {/* Add your cart items here */}
         </div>
         <div className="cart-summary">
-          <button className="checkout-button" onClick={handleOrderClick}>Valider mes achats →</button>
+          <button className="checkout-button" onClick={handleOrderClick}>
+            Valider mes achats →
+          </button>
           <button className="checkout-button">Vider mon panier</button>
         </div>
       </div>
@@ -100,14 +101,21 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
         <Link to="/" onClick={() => setIsOpen(false)}>
           Accueil
         </Link>
-        <Link to="/order" onClick={() => setIsOpen(false)}>
-          Cart
-        </Link>
+        {!isAdmin && (
+          <Link to="/order" onClick={() => setIsOpen(false)}>
+            Order
+          </Link>
+        )}
         {isAuth ? (
           <>
             <Link to="/profile" onClick={() => setIsOpen(false)}>
               Profile
             </Link>
+            {isAdmin && (
+              <Link to="/admin" onClick={() => setIsOpen(false)}>
+                Admin
+              </Link>
+            )}
             <button
               onClick={() => {
                 handleLogout();

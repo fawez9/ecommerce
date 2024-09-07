@@ -1,21 +1,57 @@
 /* Profile Page Container */
-.profile-container {
-  max-width: 800px;
-  margin: 0 auto;
+.profile-page {
+  display: flex;
+  max-width: 100%; /* Full width to prevent extra space on smaller screens */
+  margin: 0 80px;
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+/* Sidebar */
+.sidebar-profile {
+  width: 220px; /* Slightly wider to better utilize space */
+  border-right: 1px solid #000; /* Black border */
+  padding-right: 20px;
+  margin-left: 0; /* Revert margin-left */
+}
+
+.sidebar-profile button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #f9f9f9; /* Light gray background */
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: left;
+  cursor: pointer;
+  color: #000; /* Black text */
+}
+
+.sidebar-profile button.active {
+  background-color: #000; /* Black background for active button */
+  color: #fff; /* White text */
+}
+
+.sidebar-profile button:hover {
+  background-color: #ddd; /* Light gray on hover */
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding-left: 20px;
+  position: relative; /* Position relative to handle the edit button positioning */
 }
 
 /* Alert Styling */
 .alert {
   padding: 10px;
   margin-bottom: 20px;
-  background-color: #ffdddd;
-  border: 1px solid #f5c6cb;
+  background-color: #fff; /* White background */
+  border: 1px solid #ddd; /* Light gray border */
   border-radius: 4px;
-  color: #d8000c;
+  color: #000; /* Black text */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -24,7 +60,7 @@
 .alert button {
   background: none;
   border: none;
-  color: #d8000c;
+  color: #000; /* Black text */
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
@@ -32,90 +68,153 @@
 
 /* Form Group Styling */
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
+  color: #000; /* Black text */
 }
 
 .form-group input {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
+  padding: 10px; /* Increased padding for better readability */
+  border: 1px solid #ddd; /* Light gray border */
   border-radius: 4px;
   box-sizing: border-box;
+  font-size: 16px; /* Larger font size */
 }
 
 .form-group input:focus {
-  border-color: #007bff;
+  border-color: #000; /* Black border on focus */
   outline: none;
 }
 
 /* Buttons */
 button {
-  padding: 10px 15px;
-  border: 1px solid #000000; /* Border color */
+  padding: 12px 20px; /* Larger padding for better usability */
+  border: 1px solid #000; /* Black border */
   border-radius: 4px;
-  color: #161616; /* Text color */
-  background-color: #ffffff; /* Button background color */
+  color: #000; /* Black text */
+  background-color: #fff; /* White background */
   cursor: pointer;
-  font-size: 16px;
+  font-size: 16px; /* Larger font size */
   margin-right: 10px;
   transition: all 0.3s;
 }
 
 button:hover {
-  background-color: #000000; /* Background color on hover */
-  color: #ffffff; /* Text color on hover */
-  border-color: #000000; /* Border color on hover */
+  background-color: #000; /* Black background on hover */
+  color: #fff; /* White text */
+  border-color: #000; /* Black border on hover */
 }
 
 button.cancel {
-  border-color: #3c4044; /* Border color */
-  color: #6c757d; /* Text color */
+  border-color: #666; /* Dark gray border */
+  color: #666; /* Dark gray text */
 }
 
 button.cancel:hover {
-  background-color: #6c757d; /* Background color on hover */
-  color: #ffffff; /* Text color on hover */
-  border-color: #6c757d; /* Border color on hover */
-}
-
-/* User Info Display */
-h1 {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-p {
-  font-size: 16px;
-  margin: 5px 0;
+  background-color: #666; /* Dark gray background on hover */
+  color: #fff; /* White text */
+  border-color: #666; /* Dark gray border on hover */
 }
 
 /* Edit Button */
 button.edit {
-  border-color: #28a745; /* Border color */
-  color: #28a745; /* Text color */
+  border-color: #000; /* Black border */
+  color: #000; /* Black text */
+  position: absolute; /* Position absolutely within the main content */
+  top: 20px; /* Position from the top */
+  right: 20px; /* Position from the right */
 }
 
 button.edit:hover {
-  background-color: #28a745; /* Background color on hover */
-  color: #ffffff; /* Text color on hover */
-  border-color: #28a745; /* Border color on hover */
+  background-color: #000; /* Black background on hover */
+  color: #fff; /* White text */
+  border-color: #000; /* Black border on hover */
+}
+
+/* User Info Display */
+.profile-info {
+  text-align: left; /* Align text to the left */
+  padding-right: 240px; /* Adjust padding to account for sidebar */
+  position: relative;
+  box-sizing: border-box; /* Include padding in width */
+}
+
+.profile-info img {
+  max-width: 150px; /* Adjusted image size */
+  height: auto;
+  border-radius: 50%;
+  margin-bottom: 20px; /* Added margin for spacing */
+}
+
+.profile-info h1 {
+  font-size: 28px; /* Larger font size for readability */
+  margin-bottom: 15px;
+  color: #000; /* Black text */
+  text-align: center; /* Center-align only the username */
+}
+
+.profile-info p {
+  font-size: 18px; /* Larger font size for better readability */
+  margin: 10px 0;
+  color: #000; /* Black text */
 }
 
 /* Responsive Design */
-@media (max-width: 600px) {
-  .profile-container {
-    padding: 10px;
+@media (max-width: 720px) {
+  .profile-page {
+    flex-direction: column;
+    padding: 10px; /* Reduced padding */
+  }
+
+  .sidebar-profile {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #000; /* Black border for mobile view */
+    padding-right: 0;
+    padding-bottom: 10px;
+    margin-left: 0; /* Ensure margin is zero */
+  }
+
+  .main-content {
+    padding-left: 0;
   }
 
   button {
-    padding: 8px 12px;
-    font-size: 14px;
+    padding: 10px 16px; /* Adjusted padding for mobile */
+    font-size: 14px; /* Smaller font size for mobile */
+  }
+
+  .profile-info {
+    padding-right: 0; /* Remove right padding on mobile */
+    margin-bottom: 20px; /* Add bottom margin to avoid overlap with other sections */
+  }
+
+  button.edit {
+    position: static; /* Position statically on mobile */
+    margin: 10px 0; /* Add margin for spacing */
+    display: block; /* Ensure button is visible */
+    width: 100%; /* Full width for mobile */
+  }
+
+  .update-button-group {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    justify-content: center; /* Center-align buttons */
+    margin-top: 10px;
+  }
+
+  #edit-button {
+    margin-bottom: 10px; /* Space between buttons */
+  }
+
+  .sidebar-profile button {
+    font-size: 14px; /* Adjust font size for mobile */
   }
 }
 
@@ -125,10 +224,11 @@ button.edit:hover {
 }
 
 .purchase-history h2 {
-  font-size: 20px;
+  font-size: 22px; /* Larger font size */
   margin-bottom: 15px;
-  border-bottom: 2px solid #007bff;
+  border-bottom: 2px solid #000; /* Black border */
   padding-bottom: 5px;
+  color: #000; /* Black text */
 }
 
 /* Purchased Items List */
@@ -141,20 +241,20 @@ button.edit:hover {
 .purchase-history li {
   display: flex;
   align-items: flex-start;
-  padding: 15px;
-  border: 1px solid #ddd;
+  padding: 20px; /* Increased padding */
+  border: 1px solid #000; /* Black border */
   border-radius: 4px;
-  background-color: #fff;
-  margin-bottom: 15px;
+  background-color: #fff; /* White background */
+  margin-bottom: 20px; /* Increased margin */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Product Image */
 .purchase-history img {
-  max-width: 100px;
+  max-width: 120px; /* Adjusted image size */
   height: auto;
   border-radius: 4px;
-  margin-right: 15px;
+  margin-right: 20px; /* Increased margin */
 }
 
 /* Product Details */
@@ -164,20 +264,42 @@ button.edit:hover {
 
 /* Product Name */
 .purchase-history .product-details h3 {
-  font-size: 18px;
+  font-size: 20px; /* Larger font size */
   margin: 0 0 10px;
+  color: #000; /* Black text */
 }
 
 /* Product Price */
 .purchase-history .product-details p.price {
-  font-size: 16px;
+  font-size: 18px; /* Larger font size */
   font-weight: bold;
   margin: 5px 0;
+  color: #000; /* Black text */
 }
 
 /* Product Description */
 .purchase-history .product-details p.description {
-  font-size: 14px;
-  color: #666;
+  font-size: 16px; /* Larger font size */
+  color: #333; /* Dark gray text */
   margin: 5px 0;
+}
+
+#edit-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #fff; /* White background */
+  color: #000; /* Black text */
+  border: 2px solid #000; /* Black border */
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.update-button-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
