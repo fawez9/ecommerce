@@ -1,19 +1,19 @@
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import "./App.css";
-import { Navbar } from "./components/navbar";
-import { AuthPage } from "./pages/auth";
-import { OrderPage } from "./pages/order";
-import { HomePage } from "./pages/home";
-import { ProfilePage } from "./pages/profile";
-import { AdminPage } from "./pages/admin";
+import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { jwtDecode } from "jwt-decode";
+import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Navbar } from "./components/navbar";
+import { HomePage } from "./pages/home";
+import { OrderPage } from "./pages/order";
+import { ProfilePage } from "./pages/profile";
+import { AdminPage } from "./pages/admin";
+import { AuthPage } from "./pages/auth";
+import "./App.css";
 
 function App() {
-  const [isAuth, setIsAuth] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [userName, setUsername] = useState(""); // New state for username
+  const [isAuth, setIsAuth] = useState(() => localStorage.getItem("isAuth") === "true");
+  const [isAdmin, setIsAdmin] = useState(() => localStorage.getItem("isAdmin") === "true");
+  const [userName, setUsername] = useState("");
   const [cookies, setCookie, removeCookie] = useCookies(["access_token"]);
 
   const checkAuth = () => {
@@ -22,7 +22,10 @@ function App() {
     if (token) {
       const decodedToken = jwtDecode<{ isAdmin: boolean; userName: string }>(token);
       setIsAdmin(decodedToken.isAdmin);
-      setUsername(decodedToken.userName); // Set username from token
+      setUsername(decodedToken.userName);
+      setCookie("access_token", token);
+      localStorage.setItem("isAuth", "true");
+      localStorage.setItem("isAdmin", decodedToken.isAdmin ? "true" : "false");
     }
   };
 
@@ -32,10 +35,12 @@ function App() {
 
   const handleLogout = () => {
     removeCookie("access_token");
+    localStorage.removeItem("isAuth");
+    localStorage.removeItem("isAdmin");
     localStorage.removeItem("userID");
     setIsAuth(false);
     setIsAdmin(false);
-    setUsername(""); // Clear username on logout
+    setUsername("");
   };
 
   return (
