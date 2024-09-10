@@ -142,9 +142,14 @@ body {
   cursor: pointer;
 }
 
+.closeIcon:hover {
+  color: #ff0000;
+}
+
 /* Show side menu when triggered */
 .sideMenu.show {
   width: 250px;
+  padding-top: 75px;
 }
 
 /* Mobile-specific styling */
@@ -277,7 +282,7 @@ body {
   transition: transform 0.3s ease-in-out;
   z-index: 1000;
 }
-.cart-icon{
+.cart-icon {
   cursor: pointer;
   color: #fff;
   text-decoration: none;

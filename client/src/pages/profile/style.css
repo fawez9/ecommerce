@@ -19,7 +19,7 @@
   display: block;
   width: 100%;
   padding: 10px;
-  border: none;
+  border: 1px solid #cccccc; /* Black border */
   background-color: #f9f9f9; /* Light gray background */
   font-size: 16px;
   margin-bottom: 10px;
@@ -34,7 +34,8 @@
 }
 
 .sidebar-profile button:hover {
-  background-color: #ddd; /* Light gray on hover */
+  background-color: #cccccc; /* Light gray on hover */
+  color: #000; /* Black text */
 }
 
 /* Main Content */
@@ -69,6 +70,7 @@
 /* Form Group Styling */
 .form-group {
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .form-group label {
@@ -296,6 +298,11 @@ button.edit:hover {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+
+#edit-button:hover {
+  background-color: #000; /* Darker blue on hover */
+  color: #fff; /* White text on hover */
 }
 
 .update-button-group {

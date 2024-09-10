@@ -110,7 +110,7 @@ router.delete("/profile", verifyToken, async (req: Request, res: Response) => {
   }
 });
 
-router.get("/purchased-items/:userID", async (req: Request, res: Response) => {
+router.get("/purchased-items/:userID", verifyToken, async (req: Request, res: Response) => {
   const { userID } = req.params;
   try {
     const user = await UserModel.findById(userID);

@@ -109,6 +109,7 @@ input {
   font-weight: bold;
   display: block;
   margin-bottom: 5px;
+  color: #000;
 }
 .form-group input {
   width: 100%;

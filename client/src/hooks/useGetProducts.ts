@@ -40,7 +40,7 @@ export const useGetProducts = (): UseGetProductsReturn => {
 
   useEffect(() => {
     fetchProducts();
-  }, [headers.authorization]);
+  }, [headers.Authorization]);
 
   return { products, isLoading, error, fetchProducts };
 };
