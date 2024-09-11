@@ -25,7 +25,7 @@ function App() {
       setUsername(decodedToken.userName);
       setCookie("access_token", token);
       localStorage.setItem("isAuth", "true");
-      localStorage.setItem("isAdmin", decodedToken.isAdmin ? "true" : "false");
+      localStorage.setItem("isAdmin", decodedToken.isAdmin === false ? "false" : "true");
     }
   };
 
@@ -42,6 +42,7 @@ function App() {
     setIsAdmin(false);
     setUsername("");
   };
+  // console.log(isAuth, isAdmin);
 
   return (
     <div className="App">
@@ -50,7 +51,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/order" element={<OrderPage />} />
-          <Route path="/profile" element={isAuth ? <ProfilePage /> : <Navigate to="/auth" />} />
+          <Route path="/profile" element={isAuth ? <ProfilePage isAdmin={isAdmin} /> : <Navigate to="/auth" />} />
           <Route path="/admin" element={isAdmin ? <AdminPage /> : <Navigate to="/auth" />} />
           <Route path="/auth" element={isAuth ? <Navigate to="/" /> : <AuthPage />} />
         </Routes>

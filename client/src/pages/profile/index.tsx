@@ -4,6 +4,10 @@ import { useGetToken } from "../../hooks/useGetToken";
 import "./style.css"; // Import the CSS file
 import { UserErrors } from "../../errors";
 
+interface ProfilePageProps {
+  isAdmin: boolean;
+}
+
 // Define the structure for Product
 export interface IProduct {
   _id: string;
@@ -29,7 +33,7 @@ export interface IUser {
   purchasedItems: string[]; // Assuming purchasedItems is an array of product IDs
 }
 
-export const ProfilePage = () => {
+export const ProfilePage = ({ isAdmin }: ProfilePageProps) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [passwordMode, setPasswordMode] = useState(false);
@@ -159,9 +163,11 @@ export const ProfilePage = () => {
         <button onClick={() => setActiveTab("info")} className={activeTab === "info" ? "active" : ""}>
           User Info
         </button>
-        <button onClick={() => setActiveTab("history")} className={activeTab === "history" ? "active" : ""}>
-          Purchase History
-        </button>
+        {!isAdmin ? (
+          <button onClick={() => setActiveTab("history")} className={activeTab === "history" ? "active" : ""}>
+            Purchase History
+          </button>
+        ) : null}
       </div>
       <div className="main-content">
         {alertMessage && (

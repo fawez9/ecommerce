@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { BsHouseFill, BsBagFill, BsPeopleFill, BsList, BsX } from "react-icons/bs";
+import { useState } from "react";
+import { BsHouseFill, BsBagFill, BsPeopleFill, BsList, BsX, BsBoxSeamFill } from "react-icons/bs";
 import "./style.css";
 import { Dashboard } from "../../components/dashboard";
 import { Users } from "../../components/users";
 import { ProductsAdmin } from "../../components/productsAdmin";
+import { Order } from "../../components/order";
 
 export const AdminPage = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -21,6 +22,8 @@ export const AdminPage = () => {
         return <ProductsAdmin />;
       case "users":
         return <Users />;
+      case "orders":
+        return <Order />;
       default:
         return <Dashboard />;
     }
@@ -45,6 +48,10 @@ export const AdminPage = () => {
           <div className={`nav-item ${activeSection === "users" ? "active" : ""}`} onClick={() => setActiveSection("users")}>
             <BsPeopleFill />
             <span>Users</span>
+          </div>
+          <div className={`nav-item ${activeSection === "orders" ? "active" : ""}`} onClick={() => setActiveSection("orders")}>
+            <BsBoxSeamFill />
+            <span>Orders</span>
           </div>
         </nav>
       </div>

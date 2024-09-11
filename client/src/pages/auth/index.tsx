@@ -30,8 +30,6 @@ const Register = () => {
   const [phone, setPhone] = useState<string>("");
   const [address, setAddress] = useState<string>("");
 
-  const navigate = useNavigate();
-
   const handleSubmit = async (event: SyntheticEvent) => {
     event.preventDefault();
 
@@ -157,6 +155,7 @@ const Login = () => {
           Connexion
         </button>
         <a href="#" className="forgot-password">
+          {/* TODO: link to forgot password */}
           Mot de passe oublié?
         </a>
       </form>
