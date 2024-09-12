@@ -100,7 +100,7 @@ router.put("/:id", verifyToken, verifyAdmin, async (req: Request, res: Response)
     if (salePrice >= 0) {
       product.salePrice = salePrice;
     }
-    if (stockQuantity) {
+    if (stockQuantity >= 0) {
       product.stockQuantity = stockQuantity;
     }
     if (img1) {

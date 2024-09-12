@@ -34,6 +34,9 @@ export const HomePage = () => {
 
   return (
     <div className="home">
+      <div>
+        <img src="/src/assets/Dragon tattoo.png" alt="collection" className="home-img" />
+      </div>
       <h1 className="home-title">Collection 2024</h1>
       <div className="products">
         {products.map((product) => (
@@ -43,19 +46,20 @@ export const HomePage = () => {
             <h2 className="product-name">{product.productName}</h2>
             {product.salePrice ? (
               <div className="price-wrapper">
-                <p className="product-price sale-price">
-                  ${product.salePrice.toFixed(2)}
-                  {/* <span className="discount-percent">{(((product.regularPrice - product.salePrice) / product.regularPrice) * 100).toFixed(0)}% Off</span> */}
-                </p>
+                <p className="product-price sale-price">${product.salePrice.toFixed(2)}</p>
                 <p className="product-price original-price">${product.regularPrice.toFixed(2)}</p>
               </div>
             ) : (
               <p className="product-price">${product.regularPrice.toFixed(2)}</p>
             )}
             <p className="product-description">{product.description}</p>
-            <button className="buy-button" onClick={() => addToCart(product._id)}>
-              Acheter {getCartItemCount(product._id) > 0 && <>({getCartItemCount(product._id)})</>}
-            </button>
+            {product.stockQuantity > 0 ? (
+              <button className="buy-button" onClick={() => addToCart(product._id)}>
+                Acheter {getCartItemCount(product._id) > 0 && <>({getCartItemCount(product._id)})</>}
+              </button>
+            ) : (
+              <div className="out-of-stock-banner">Rupture de stock</div>
+            )}
           </div>
         ))}
       </div>

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useGetToken } from "../hooks/useGetToken";
-import "./styles/style-productAdmin.css";
+import "./styles/productAdmin.css";
 import { IProduct } from "../models/interfaces";
 import { useGetProducts } from "../hooks/useGetProducts";
 

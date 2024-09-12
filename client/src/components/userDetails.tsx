@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { IUser } from "../models/interfaces";
 import { useGetToken } from "../hooks/useGetToken";
-import "./styles/style-userDetails.css";
-import { User } from "./user";
+import "./styles/userDetails.css";
 
 interface UserDetailsProps {
   userID: string | null;
@@ -51,9 +50,7 @@ export const UserDetails: React.FC<UserDetailsProps> = ({ userID }) => {
 
   return (
     <div className="user-details">
-      <h1>
-        <strong></strong> {user.fullName}
-      </h1>
+      <h1>{user.fullName}</h1>
       <p>
         <strong>Email:</strong> {user.email}
       </p>
@@ -67,7 +64,7 @@ export const UserDetails: React.FC<UserDetailsProps> = ({ userID }) => {
         <strong>Purchased Items:</strong> {user.purchasedItems.map((item) => item).join(", ")}
         </p> */}
       {/*  TODO add order ID here */}
-      <button onClick={() => handleDelete(user._id)}>Delete</button>
+      {user.isAdmin ? null : <button onClick={() => handleDelete(user._id)}>Delete</button>}
     </div>
   );
 };

@@ -119,3 +119,16 @@
 .buy-button:hover {
   background-color: #000000; /* Darker blue on hover */
 }
+
+.out-of-stock-banner {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #ff4d4d;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  z-index: 1;
+}

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { BsPerson } from "react-icons/bs";
-import "./styles/style-user.css";
+import "./styles/user.css";
 import { useGetUsers } from "../hooks/useGetUsers";
 
 interface UserProps {

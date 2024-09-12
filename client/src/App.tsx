@@ -9,6 +9,8 @@ import { ProfilePage } from "./pages/profile";
 import { AdminPage } from "./pages/admin";
 import { AuthPage } from "./pages/auth";
 import "./App.css";
+import NotFound from "./components/notfound";
+import { Footer } from "./components/footer";
 
 function App() {
   const [isAuth, setIsAuth] = useState(() => localStorage.getItem("isAuth") === "true");
@@ -54,7 +56,9 @@ function App() {
           <Route path="/profile" element={isAuth ? <ProfilePage isAdmin={isAdmin} /> : <Navigate to="/auth" />} />
           <Route path="/admin" element={isAdmin ? <AdminPage /> : <Navigate to="/auth" />} />
           <Route path="/auth" element={isAuth ? <Navigate to="/" /> : <AuthPage />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
+        {isAdmin ? null : <Footer />}
       </Router>
     </div>
   );
