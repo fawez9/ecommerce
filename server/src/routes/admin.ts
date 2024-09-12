@@ -29,6 +29,18 @@ router.get("/users/:userID", verifyToken, verifyAdmin, async (req: Request, res:
     res.status(500).json({ type: err });
   }
 });
+router.delete("/users/:userID", verifyToken, verifyAdmin, async (req: Request, res: Response) => {
+  const { userID } = req.params;
+  try {
+    const user = await UserModel.findByIdAndDelete(userID);
+    if (!user) {
+      return res.status(404).json({ type: UserErrors.NO_USER_FOUND });
+    }
+    res.json({ user });
+  } catch (err) {
+    res.status(500).json({ type: err });
+  }
+});
 
 router.get("/products", verifyToken, verifyAdmin, async (req: Request, res: Response) => {
   try {

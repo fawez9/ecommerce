@@ -1,17 +1,26 @@
+// AdminPage.tsx
+
 import { useState } from "react";
-import { BsHouseFill, BsBagFill, BsPeopleFill, BsList, BsX, BsBoxSeamFill } from "react-icons/bs";
+import { BsHouseFill, BsBagFill, BsPeopleFill, BsBoxSeamFill, BsList, BsX } from "react-icons/bs";
 import "./style.css";
 import { Dashboard } from "../../components/dashboard";
-import { Users } from "../../components/users";
+import { User } from "../../components/user";
 import { ProductsAdmin } from "../../components/productsAdmin";
 import { Order } from "../../components/order";
+import { UserDetails } from "../../components/userDetails";
 
 export const AdminPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [activeSection, setActiveSection] = useState("dashboard");
+  const [selectedUserID, setSelectedUserID] = useState<string | null>(null);
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
+  };
+
+  const handleUserClick = (userID: string) => {
+    setSelectedUserID(userID);
+    setActiveSection("userDetails");
   };
 
   const renderContent = () => {
@@ -21,9 +30,11 @@ export const AdminPage = () => {
       case "products":
         return <ProductsAdmin />;
       case "users":
-        return <Users />;
+        return <User onUserClick={handleUserClick} />;
       case "orders":
         return <Order />;
+      case "userDetails":
+        return <UserDetails userID={selectedUserID} />;
       default:
         return <Dashboard />;
     }
@@ -91,6 +102,10 @@ export const AdminPage = () => {
           <div className={`nav-item ${activeSection === "users" ? "active" : ""}`} onClick={() => setActiveSection("users")}>
             <BsPeopleFill />
             <span>Users</span>
+          </div>
+          <div className={`nav-item ${activeSection === "orders" ? "active" : ""}`} onClick={() => setActiveSection("orders")}>
+            <BsBoxSeamFill />
+            <span>Orders</span>
           </div>
         </nav>
       </div>

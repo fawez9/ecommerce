@@ -9,3 +9,15 @@ export interface IProduct {
   img3?: string;
   description: string;
 }
+
+export interface IUser {
+  _id?: string;
+  fullName: string;
+  password: string;
+  imgURL?: string;
+  email: string;
+  phone: string;
+  address: string;
+  isAdmin: boolean;
+  purchasedItems: string[];
+}

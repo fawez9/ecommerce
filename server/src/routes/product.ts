@@ -97,7 +97,7 @@ router.put("/:id", verifyToken, verifyAdmin, async (req: Request, res: Response)
     if (regularPrice) {
       product.regularPrice = regularPrice;
     }
-    if (salePrice) {
+    if (salePrice >= 0) {
       product.salePrice = salePrice;
     }
     if (stockQuantity) {
