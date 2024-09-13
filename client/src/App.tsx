@@ -11,28 +11,35 @@ import { AuthPage } from "./pages/auth";
 import "./App.css";
 import NotFound from "./components/notfound";
 import { Footer } from "./components/footer";
+import { Checkout } from "./pages/checkout";
 
 function App() {
-  const [isAuth, setIsAuth] = useState(() => localStorage.getItem("isAuth") === "true");
-  const [isAdmin, setIsAdmin] = useState(() => localStorage.getItem("isAdmin") === "true");
+  const [isAuth, setIsAuth] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [userName, setUsername] = useState("");
-  const [cookies, setCookie, removeCookie] = useCookies(["access_token"]);
-
-  const checkAuth = () => {
-    const token = cookies.access_token;
-    setIsAuth(!!token);
-    if (token) {
-      const decodedToken = jwtDecode<{ isAdmin: boolean; userName: string }>(token);
-      setIsAdmin(decodedToken.isAdmin);
-      setUsername(decodedToken.userName);
-      setCookie("access_token", token);
-      localStorage.setItem("isAuth", "true");
-      localStorage.setItem("isAdmin", decodedToken.isAdmin === false ? "false" : "true");
-    }
-  };
+  const [cookies, _, removeCookie] = useCookies(["access_token"]);
+  const [loading, setLoading] = useState(true); // Loading state to handle initial render
 
   useEffect(() => {
-    checkAuth();
+    const token = cookies.access_token;
+    if (token) {
+      try {
+        const decodedToken = jwtDecode<{ isAdmin: boolean; userName: string }>(token);
+        setIsAuth(true);
+        setIsAdmin(decodedToken.isAdmin);
+        setUsername(decodedToken.userName);
+        localStorage.setItem("isAuth", "true");
+        localStorage.setItem("isAdmin", decodedToken.isAdmin ? "true" : "false");
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+        setIsAuth(false);
+        setIsAdmin(false);
+      }
+    } else {
+      setIsAuth(false);
+      setIsAdmin(false);
+    }
+    setLoading(false); // Set loading to false once the check is complete
   }, [cookies.access_token]);
 
   const handleLogout = () => {
@@ -44,7 +51,12 @@ function App() {
     setIsAdmin(false);
     setUsername("");
   };
-  // console.log(isAuth, isAdmin);
+
+  // console.log("isAuth:", isAuth, "isAdmin:", isAdmin);
+
+  if (loading) {
+    return <div>Loading...</div>; // Render a loading indicator or spinner
+  }
 
   return (
     <div className="App">
@@ -56,6 +68,7 @@ function App() {
           <Route path="/profile" element={isAuth ? <ProfilePage isAdmin={isAdmin} /> : <Navigate to="/auth" />} />
           <Route path="/admin" element={isAdmin ? <AdminPage /> : <Navigate to="/auth" />} />
           <Route path="/auth" element={isAuth ? <Navigate to="/" /> : <AuthPage />} />
+          <Route path="/checkout" element={<Checkout isAuth={isAuth} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         {isAdmin ? null : <Footer />}

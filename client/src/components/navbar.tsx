@@ -1,7 +1,11 @@
+// components/Navbar.tsx
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faBars, faTimes, faChevronDown, faUser } from "@fortawesome/free-solid-svg-icons";
+
+import { useCart } from "../context/cartContext";
+import { useGetProducts } from "../hooks/useGetProducts";
 
 interface NavbarProps {
   onLogout: () => void;
@@ -13,12 +17,11 @@ interface NavbarProps {
 export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false); // State to control cart drawer
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const navigate = useNavigate();
+  const { cartItems, removeFromCart, clearCart } = useCart();
+  const { products } = useGetProducts(); // Fetch products
 
-  const handleOrderClick = () => {
-    navigate("/order");
-  };
   const toggleMenu = () => {
     setIsOpen((prevState) => !prevState);
   };
@@ -31,6 +34,11 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
     onLogout();
     navigate("/auth");
   };
+
+  const cartItemCount = Object.values(cartItems).reduce((acc, count) => acc + count, 0);
+
+  // Create a map of product details for easy access
+  const productMap = new Map(products.map((product) => [product._id, product]));
 
   return (
     <>
@@ -45,6 +53,7 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
           {!isAdmin && (
             <div className="cart-icon" onClick={toggleCart}>
               <FontAwesomeIcon icon={faShoppingCart} />
+              {cartItemCount > 0 && <span className="cart-count">{cartItemCount}</span>}
             </div>
           )}
           {isAuth ? (
@@ -80,14 +89,31 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
           <FontAwesomeIcon icon={faTimes} onClick={toggleCart} className="close-icon" />
         </div>
         <div className="cart-content">
-          <p>Votre panier est vide!</p>
-          {/* Add your cart items here */}
+          {Object.keys(cartItems).length === 0 ? (
+            <p>Your cart is empty!</p>
+          ) : (
+            Object.entries(cartItems).map(([itemId, quantity]) => {
+              const product = productMap.get(itemId);
+              if (!product) return null;
+              return (
+                <div key={itemId} className="cart-item">
+                  <img src={product.img1} alt={product.productName} className="product-img" />
+                  <div className="item-details">
+                    <h2>{product.productName}</h2>
+                    <p>Qty: {quantity}</p>
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
         <div className="cart-summary">
-          <button className="checkout-button" onClick={handleOrderClick}>
-            Valider mes achats →
+          <button className="checkout-button">
+            <Link to="/order">Valider →</Link>
           </button>
-          <button className="checkout-button">Vider mon panier</button>
+          <button className="checkout-button" onClick={clearCart}>
+            Vider X
+          </button>
         </div>
       </div>
 

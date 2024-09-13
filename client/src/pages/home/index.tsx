@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useGetProducts } from "../../hooks/useGetProducts";
+import { useCart } from "../../context/cartContext";
 import "./style.css";
 
 export const HomePage = () => {
   const { products, isLoading, error } = useGetProducts();
-
-  const [cartItems, setCartItems] = useState<{ string: number } | {}>({});
+  const { cartItems, addToCart } = useCart();
 
   if (isLoading) {
     return <div className="loading">Loading...</div>;
@@ -18,24 +18,15 @@ export const HomePage = () => {
   if (products.length === 0) {
     return <div className="no-products">No products available</div>;
   }
-  const addToCart = (itemId: string) => {
-    if (!cartItems[itemId]) {
-      setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
-    } else {
-      setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-    }
-  };
+
   const getCartItemCount = (itemId: string): number => {
-    if (itemId in cartItems) {
-      return cartItems[itemId];
-    }
-    return 0;
+    return cartItems[itemId] || 0;
   };
 
   return (
     <div className="home">
       <div>
-        <img src="/src/assets/Dragon tattoo.png" alt="collection" className="home-img" />
+        <img src="/assets/Dragon tattoo.png" alt="collection" className="home-img" />
       </div>
       <h1 className="home-title">Collection 2024</h1>
       <div className="products">
@@ -55,7 +46,7 @@ export const HomePage = () => {
             <p className="product-description">{product.description}</p>
             {product.stockQuantity > 0 ? (
               <button className="buy-button" onClick={() => addToCart(product._id)}>
-                Acheter {getCartItemCount(product._id) > 0 && <>({getCartItemCount(product._id)})</>}
+                Acheter {getCartItemCount(product._id) > 0 && `(${getCartItemCount(product._id)})`}
               </button>
             ) : (
               <div className="out-of-stock-banner">Rupture de stock</div>
