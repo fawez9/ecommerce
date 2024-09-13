@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faBars, faTimes, faChevronDown, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faBars, faTimes, faChevronDown, faUser, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { useCart } from "../context/cartContext";
 import { useGetProducts } from "../hooks/useGetProducts";
@@ -109,10 +109,10 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
         </div>
         <div className="cart-summary">
           <button className="checkout-button">
-            <Link to="/order">Valider →</Link>
+            <Link to="/order">Voir →</Link>
           </button>
           <button className="checkout-button" onClick={clearCart}>
-            Vider X
+            Vider <FontAwesomeIcon icon={faTrash} />
           </button>
         </div>
       </div>
