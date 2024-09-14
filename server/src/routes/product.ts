@@ -44,7 +44,7 @@ router.post("/", verifyToken, verifyAdmin, async (req: Request, res: Response) =
 });
 
 //order product
-router.post("/order", async (req: Request, res: Response) => {
+/* router.post("/order", async (req: Request, res: Response) => {
   const { customerID, cartItems } = req.body;
   try {
     const user = await UserModel.findById(customerID);
@@ -81,7 +81,7 @@ router.post("/order", async (req: Request, res: Response) => {
   } catch (err) {
     return res.status(400).json({ err });
   }
-});
+}); */
 
 router.put("/:id", verifyToken, verifyAdmin, async (req: Request, res: Response) => {
   const { id } = req.params;

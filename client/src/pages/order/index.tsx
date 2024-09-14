@@ -62,12 +62,12 @@ export const OrderPage = () => {
       </div>
       {cartItemsArray.length > 0 && (
         <div className="order-actions">
-          <button onClick={clearCart} className="clear-cart-button">
-            Clear Cart
-          </button>
           <Link to="/checkout">
             <button className="proceed-button">Proceed to Checkout</button>
           </Link>
+          <button onClick={clearCart} className="clear-cart-button">
+            Clear Cart
+          </button>
         </div>
       )}
     </div>

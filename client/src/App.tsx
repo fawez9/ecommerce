@@ -11,7 +11,7 @@ import { AuthPage } from "./pages/auth";
 import "./App.css";
 import NotFound from "./components/notfound";
 import { Footer } from "./components/footer";
-import { Checkout } from "./pages/checkout";
+import { CheckoutPage } from "./pages/checkout";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -46,7 +46,6 @@ function App() {
     removeCookie("access_token");
     localStorage.removeItem("isAuth");
     localStorage.removeItem("isAdmin");
-    localStorage.removeItem("userID");
     setIsAuth(false);
     setIsAdmin(false);
     setUsername("");
@@ -68,7 +67,7 @@ function App() {
           <Route path="/profile" element={isAuth ? <ProfilePage isAdmin={isAdmin} /> : <Navigate to="/auth" />} />
           <Route path="/admin" element={isAdmin ? <AdminPage /> : <Navigate to="/auth" />} />
           <Route path="/auth" element={isAuth ? <Navigate to="/" /> : <AuthPage />} />
-          <Route path="/checkout" element={<Checkout isAuth={isAuth} />} />
+          <Route path="/checkout" element={<CheckoutPage isAuth={isAuth} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         {isAdmin ? null : <Footer />}

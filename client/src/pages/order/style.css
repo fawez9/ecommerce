@@ -112,28 +112,31 @@
 .order-actions button {
   padding: 15px 25px; /* Increased padding */
   font-size: 1.1rem; /* Slightly larger font size */
-  border: none;
+  border: 1px solid #000;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .clear-cart-button {
-  background-color: #f44336;
-  color: white;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
 }
 
 .clear-cart-button:hover {
-  background-color: #e53935;
+  background-color: #000000;
+  color: #ff0000;
 }
 
 .proceed-button {
-  background-color: #4caf50;
-  color: white;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  border: 2px solid #000000;
 }
 
 .proceed-button:hover {
-  background-color: #388e3c;
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .order-actions button:active {

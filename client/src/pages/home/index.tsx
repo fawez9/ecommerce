@@ -25,9 +25,7 @@ export const HomePage = () => {
 
   return (
     <div className="home">
-      <div>
-        <img src="/assets/Dragon tattoo.png" alt="collection" className="home-img" />
-      </div>
+      {/* TODO: Add image here <<------------------------------------------- */}
       <h1 className="home-title">Collection 2024</h1>
       <div className="products">
         {products.map((product) => (

@@ -106,8 +106,8 @@
 .buy-button {
   background-color: #ffffff;
   color: rgb(0, 0, 0);
-  border: 2px solid #000000; /* Blue border */
-  border-radius: 5px;
+  /* border: 2px solid #000000;
+  border-radius: 5px; */
   padding: 10px 20px;
   font-size: 1rem;
   cursor: pointer;

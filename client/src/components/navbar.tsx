@@ -19,7 +19,7 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const navigate = useNavigate();
-  const { cartItems, removeFromCart, clearCart } = useCart();
+  const { cartItems, clearCart, updateCartQuantity, removeFromCart } = useCart();
   const { products } = useGetProducts(); // Fetch products
 
   const toggleMenu = () => {
@@ -32,13 +32,25 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
 
   const handleLogout = () => {
     onLogout();
-    navigate("/auth");
+    navigate("/");
   };
 
   const cartItemCount = Object.values(cartItems).reduce((acc, count) => acc + count, 0);
 
   // Create a map of product details for easy access
   const productMap = new Map(products.map((product) => [product._id, product]));
+  const increaseQuantity = (itemId: string) => {
+    updateCartQuantity(itemId, (cartItems[itemId] || 0) + 1);
+  };
+
+  const decreaseQuantity = (itemId: string) => {
+    const currentQuantity = cartItems[itemId] || 0;
+    if (currentQuantity > 1) {
+      updateCartQuantity(itemId, currentQuantity - 1);
+    } else {
+      removeFromCart(itemId);
+    }
+  };
 
   return (
     <>
@@ -97,10 +109,18 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
               if (!product) return null;
               return (
                 <div key={itemId} className="cart-item">
+                  <div className="remove-item" onClick={() => removeFromCart(itemId)}>
+                    <FontAwesomeIcon icon={faTimes} />
+                  </div>
                   <img src={product.img1} alt={product.productName} className="product-img" />
                   <div className="item-details">
                     <h2>{product.productName}</h2>
-                    <p>Qty: {quantity}</p>
+                    <div className="quantity-controls">
+                      <button onClick={() => decreaseQuantity(itemId)}>-</button>
+                      <span>{quantity}</span>
+                      <button onClick={() => increaseQuantity(itemId)}>+</button>
+                    </div>
+                    <p>Price: ${((product.salePrice ? product.salePrice : product.regularPrice) * quantity).toFixed(2)}</p>
                   </div>
                 </div>
               );
@@ -108,8 +128,8 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
           )}
         </div>
         <div className="cart-summary">
-          <button className="checkout-button">
-            <Link to="/order">Voir →</Link>
+          <button className="checkout-button" onClick={() => navigate("/order")}>
+            Voir →
           </button>
           <button className="checkout-button" onClick={clearCart}>
             Vider <FontAwesomeIcon icon={faTrash} />
