@@ -53,7 +53,7 @@ export const OrderPage = () => {
                     <span>{quantity}</span>
                     <button onClick={() => increaseQuantity(itemId)}>+</button>
                   </div>
-                  <p>Price: ${((product.salePrice ? product.salePrice : product.regularPrice) * quantity).toFixed(2)}</p>
+                  <p>Price: {((product.salePrice ? product.salePrice : product.regularPrice) * quantity).toFixed(2)} DT</p>
                 </div>
               </div>
             );

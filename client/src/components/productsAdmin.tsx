@@ -119,11 +119,11 @@ export const ProductsAdmin = () => {
                 <div className="price-wrapper">
                   {product.salePrice ? (
                     <>
-                      <p className="sale-price">${product.salePrice.toFixed(2)}</p>
-                      <p className="original-price">${product.regularPrice.toFixed(2)}</p>
+                      <p className="sale-price">{product.salePrice.toFixed(2)} DT</p>
+                      <p className="original-price">{product.regularPrice.toFixed(2)} DT</p>
                     </>
                   ) : (
-                    <p className="product-price">${product.regularPrice.toFixed(2)}</p>
+                    <p className="product-price">{product.regularPrice.toFixed(2)} DT</p>
                   )}
                 </div>
                 <p className="product-description">{product.description}</p>

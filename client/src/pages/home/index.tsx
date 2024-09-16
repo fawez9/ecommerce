@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useGetProducts } from "../../hooks/useGetProducts";
 import { useCart } from "../../context/cartContext";
 import "./style.css";
@@ -35,11 +34,11 @@ export const HomePage = () => {
             <h2 className="product-name">{product.productName}</h2>
             {product.salePrice ? (
               <div className="price-wrapper">
-                <p className="product-price sale-price">${product.salePrice.toFixed(2)}</p>
-                <p className="product-price original-price">${product.regularPrice.toFixed(2)}</p>
+                <p className="product-price sale-price">{product.salePrice.toFixed(2)} DT</p>
+                <p className="product-price original-price">{product.regularPrice.toFixed(2)} DT</p>
               </div>
             ) : (
-              <p className="product-price">${product.regularPrice.toFixed(2)}</p>
+              <p className="product-price">{product.regularPrice.toFixed(2)} DT</p>
             )}
             <p className="product-description">{product.description}</p>
             {product.stockQuantity > 0 ? (

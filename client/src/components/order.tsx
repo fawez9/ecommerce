@@ -14,7 +14,7 @@ export const Order = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { headers } = useGetToken();
-  const { products, isLoading: productsLoading, getProductById } = useGetProducts();
+  const { isLoading: productsLoading, getProductById } = useGetProducts();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -40,6 +40,18 @@ export const Order = () => {
   }
 
   const handleSelectOrder = (orderId: string) => {
+    setSelectedOrders((prevSelectedOrders) => {
+      const newSelectedOrders = new Set(prevSelectedOrders);
+      if (newSelectedOrders.has(orderId)) {
+        newSelectedOrders.delete(orderId);
+      } else {
+        newSelectedOrders.add(orderId);
+      }
+      return newSelectedOrders;
+    });
+  };
+
+  const handleViewDetails = (orderId: string) => {
     setSelectedOrderId(orderId);
   };
 
@@ -66,7 +78,19 @@ export const Order = () => {
   if (selectedOrderId) {
     const selectedOrder = orders.find((order) => order._id === selectedOrderId);
     if (selectedOrder) {
-      return <OrderDetails order={selectedOrder} getProductById={getProductById} onBack={() => setSelectedOrderId(null)} />;
+      return (
+        <OrderDetails
+          order={selectedOrder}
+          getProductById={getProductById}
+          onBack={() => setSelectedOrderId(null)}
+          onConfirm={function (): void {
+            throw new Error("Function not implemented."); // TODO: Implement this function to confirm the order
+          }}
+          onDelete={function (): void {
+            throw new Error("Function not implemented."); // TODO: Implement this function to delete the order
+          }}
+        />
+      );
     }
   }
 
@@ -104,7 +128,7 @@ export const Order = () => {
                 const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0);
 
                 return (
-                  <tr key={order._id} onClick={() => handleSelectOrder(order._id)} className="clickable-row">
+                  <tr key={order._id} className="clickable-row">
                     <td>
                       <input type="checkbox" checked={selectedOrders.has(order._id)} onChange={() => handleSelectOrder(order._id)} />
                     </td>
@@ -113,10 +137,12 @@ export const Order = () => {
                     <td>{order.email}</td>
                     <td>{order.phone}</td>
                     <td>{order.address}</td>
-                    <td>${order.total.toFixed(2)}</td>
+                    <td>{order.total.toFixed(2)} DT</td>
                     <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                     <td>{totalItems} items</td>
-                    <td>View Details</td>
+                    <td>
+                      <button onClick={() => handleViewDetails(order._id)}>View Details</button>
+                    </td>
                   </tr>
                 );
               })}
