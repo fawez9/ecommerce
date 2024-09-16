@@ -329,11 +329,13 @@ body {
   margin: 10px;
   background-color: #ffffff;
   color: rgb(0, 0, 0);
-  /* border: 2px solid #000000;
-  border-radius: 5px; */
   cursor: pointer;
   text-align: center;
   transition: background-color 0.3s ease;
+}
+
+.clear-cart:hover {
+  color: #ff4d4d;
 }
 
 .backdrop {

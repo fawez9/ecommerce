@@ -25,18 +25,31 @@ router.get("/:id", verifyToken, verifyAdmin, async (req: Request, res: Response)
 });
 
 //order product ----> TODO
-router.post("/", verifyToken, verifyAdmin, async (req: Request, res: Response) => {
-  const { fullName, productId, quantity, total } = req.body;
+
+router.post("/", async (req: Request, res: Response) => {
+  const { fullName, email, phone, address, items, total } = req.body;
+
+  // Validation (basic example, you might want to add more comprehensive validation)
+  if (!fullName || !email || !phone || !address || !items || !total) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
   try {
+    // Create and save the order
     const order = new OrderModel({
-      productId,
-      quantity,
+      fullName,
+      email,
+      phone,
+      address,
+      items, // Items will be embedded directly
       total,
     });
     await order.save();
-    res.json({ message: "Order Added Successfully" });
+
+    res.json({ message: "Order Added Successfully", order });
   } catch (err) {
-    res.status(500).json({ type: err });
+    console.error(err); // Better error logging
+    res.status(500).json({ error: err.message });
   }
 });
 

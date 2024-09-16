@@ -131,7 +131,7 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => 
           <button className="checkout-button" onClick={() => navigate("/order")}>
             Voir →
           </button>
-          <button className="checkout-button" onClick={clearCart}>
+          <button className="checkout-button clear-cart" onClick={clearCart}>
             Vider <FontAwesomeIcon icon={faTrash} />
           </button>
         </div>

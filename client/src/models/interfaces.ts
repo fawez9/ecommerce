@@ -1,4 +1,4 @@
-export interface IProduct {
+interface IProduct {
   _id?: string;
   productName: string;
   regularPrice: GLfloat;
@@ -10,7 +10,7 @@ export interface IProduct {
   description: string;
 }
 
-export interface IUser {
+interface IUser {
   _id?: string;
   fullName: string;
   password: string;
@@ -21,3 +21,21 @@ export interface IUser {
   isAdmin: boolean;
   purchasedItems: string[];
 }
+
+interface IOrderItem {
+  productId: string;
+  quantity: number;
+}
+
+interface IOrder {
+  _id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  items: IOrderItem[];
+  total: number;
+  createdAt: string; // Added to show order creation date
+}
+
+export type { IProduct, IUser, IOrder, IOrderItem };

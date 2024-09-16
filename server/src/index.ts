@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { userRouter } from "./routes/user";
 import { productRouter } from "./routes/product";
 import { adminRouter } from "./routes/admin";
+import { orderRouter } from "./routes/order";
 dotenv.config();
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(cors());
 app.use("/user", userRouter);
 app.use("/product", productRouter);
 app.use("/admin", adminRouter);
+app.use("/order", orderRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useGetToken } from "../../hooks/useGetToken";
+import { useCart } from "../../context/cartContext";
+import { useGetProducts } from "../../hooks/useGetProducts";
 import "./style.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 interface FormData {
   fullName: string;
@@ -10,19 +14,25 @@ interface FormData {
   address: string;
 }
 
+const formDataInitialValues: FormData = {
+  fullName: "",
+  email: "",
+  phone: "",
+  address: "",
+};
+
 export const CheckoutPage = ({ isAuth }: { isAuth: boolean }) => {
-  const [formData, setFormData] = useState<FormData>({
-    fullName: "",
-    email: "",
-    phone: "",
-    address: "",
-  });
+  const { cartItems, clearCart } = useCart();
+  const [formData, setFormData] = useState<FormData>({ ...formDataInitialValues });
   const [loading, setLoading] = useState(isAuth);
   const [error, setError] = useState<string | null>(null);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
 
   const { headers } = useGetToken();
   const userID = localStorage.getItem("userID");
+
+  // Use the updated hook
+  const { products, isLoading: productsLoading, getProductById } = useGetProducts();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -48,20 +58,43 @@ export const CheckoutPage = ({ isAuth }: { isAuth: boolean }) => {
     };
 
     fetchUserData();
-  }, [isAuth, userID, headers.Authorization]);
+  }, [isAuth, userID, headers]);
 
+  // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
 
+    // Calculate total price using the fetched product prices
+    const totalPrice = Object.entries(cartItems).reduce((acc, [productId, quantity]) => {
+      const product = getProductById(productId);
+      const price = product?.salePrice || product?.regularPrice || 0;
+      return acc + price * quantity;
+    }, 0);
+
+    // Prepare cart items
+    const transformedCartItems = Object.entries(cartItems).map(([productId, quantity]) => ({
+      productId,
+      quantity,
+    }));
+
     try {
-      const response = await axios.post("http://localhost:3001/product/order", formData, { headers });
+      const response = await axios.post(
+        "http://localhost:3001/order/", // Ensure this is the correct endpoint for orders
+        {
+          ...formData,
+          items: transformedCartItems,
+          total: totalPrice,
+        },
+        { headers }
+      );
       console.log("Order submitted successfully:", response.data);
       setOrderSubmitted(true);
     } catch (error) {
@@ -72,12 +105,17 @@ export const CheckoutPage = ({ isAuth }: { isAuth: boolean }) => {
     }
   };
 
-  if (loading) {
+  if (loading || productsLoading) {
     return <div>Loading...</div>;
   }
 
   if (orderSubmitted) {
-    return <div>Thank you for your order! It has been successfully submitted.</div>;
+    clearCart();
+    return (
+      <div className="order-submitted">
+        Thank you for your order! It has been successfully submitted <FontAwesomeIcon icon={faCheck} />
+      </div>
+    );
   }
 
   return (
@@ -101,10 +139,13 @@ export const CheckoutPage = ({ isAuth }: { isAuth: boolean }) => {
           <label htmlFor="address">Address:</label>
           <input type="text" id="address" name="address" value={formData.address} onChange={handleInputChange} required />
         </div>
-        <button type="submit" disabled={loading}>
+        <button type="submit" className="submit-form" disabled={loading}>
           {loading ? "Submitting..." : "Submit Order"}
         </button>
-        <button type="button" onClick={() => window.history.back()} disabled={loading}>
+        <button type="reset" className="reset-form" onClick={() => setFormData({ ...formDataInitialValues })}>
+          Reset
+        </button>
+        <button type="button" className="reset-form" onClick={() => window.history.back()} disabled={loading}>
           Cancel
         </button>
       </form>

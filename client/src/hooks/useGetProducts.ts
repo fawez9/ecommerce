@@ -8,6 +8,7 @@ interface UseGetProductsReturn {
   isLoading: boolean;
   error: string | null;
   fetchProducts: () => void;
+  getProductById: (productId: string) => IProduct | undefined; // New method
 }
 
 export const useGetProducts = (): UseGetProductsReturn => {
@@ -27,9 +28,17 @@ export const useGetProducts = (): UseGetProductsReturn => {
     }
   }, [headers.Authorization]);
 
+  // New method to get product by ID
+  const getProductById = useCallback(
+    (productId: string): IProduct | undefined => {
+      return products.find((product) => product._id === productId);
+    },
+    [products]
+  );
+
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
-  return { products, isLoading, error, fetchProducts };
+  return { products, isLoading, error, fetchProducts, getProductById };
 };
