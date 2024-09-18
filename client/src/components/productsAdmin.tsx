@@ -21,6 +21,7 @@ const defaultFormValues: ProductFormData = {
   img2: "",
   img3: "",
   description: "",
+  _id: "",
 };
 
 export const ProductsAdmin = () => {
@@ -113,7 +114,9 @@ export const ProductsAdmin = () => {
 
             return (
               <div className="product-card" key={product._id}>
-                {product.salePrice ? <div className="sale-banner">On Sale!</div> : null}
+                {product.salePrice && product.stockQuantity > 0 ? <div className="sale-banner">en promotion</div> : null}
+                {product.stockQuantity === 0 ? <div className="out-of-stock-banner">Rupture de stock</div> : null}
+                <div className="product-quantity">{product.stockQuantity}</div>
                 <img src={product.img1} alt={product.productName} className="product-img" />
                 <h2 className="product-name">{product.productName}</h2>
                 <div className="price-wrapper">

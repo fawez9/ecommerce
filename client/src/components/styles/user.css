@@ -1,41 +1,66 @@
 /* User.css */
-.users {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+
+.user-container {
   padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
-.user-card {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  margin: 10px;
-  width: 300px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.user-header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-}
-
-.user-card img.user-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
   margin-bottom: 10px;
 }
 
-.user-card .user-details {
-  text-align: center;
+.user-header input[type="text"] {
+  padding: 8px;
+  font-size: 16px;
+  width: 200px;
 }
 
-.user-card .user-name {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-}
-
-.user-card :hover {
+.user-header button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
   cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.user-header button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.user-table th {
+  background-color: #f4f4f4;
+}
+
+.user-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.user-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.user-table input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.view-details-button {
+  width: 100%;
 }

@@ -221,11 +221,11 @@ button.edit:hover {
 }
 
 /* Purchase History Section */
-.purchase-history {
+.order-history {
   margin-top: 20px;
 }
 
-.purchase-history h2 {
+.order-history h2 {
   font-size: 22px; /* Larger font size */
   margin-bottom: 15px;
   border-bottom: 2px solid #000; /* Black border */
@@ -233,26 +233,19 @@ button.edit:hover {
   color: #000; /* Black text */
 }
 
-/* Purchased Items List */
-.purchase-history ul {
-  list-style-type: none;
+/* Improved List Styling */
+.order-history ul {
   padding: 0;
   margin: 0;
 }
 
-.purchase-history li {
-  display: flex;
-  align-items: flex-start;
-  padding: 20px; /* Increased padding */
-  border: 1px solid #000; /* Black border */
-  border-radius: 4px;
-  background-color: #fff; /* White background */
-  margin-bottom: 20px; /* Increased margin */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.order-history li {
+  border: none; /* Remove border for list item */
+  margin-bottom: 15px; /* Space between orders */
 }
 
 /* Product Image */
-.purchase-history img {
+.order-history img {
   max-width: 120px; /* Adjusted image size */
   height: auto;
   border-radius: 4px;
@@ -260,30 +253,33 @@ button.edit:hover {
 }
 
 /* Product Details */
-.purchase-history .product-details {
+.order-history .product-details {
   flex: 1;
 }
 
 /* Product Name */
-.purchase-history .product-details h3 {
+.order-history .product-details h3 {
   font-size: 20px; /* Larger font size */
   margin: 0 0 10px;
   color: #000; /* Black text */
 }
 
 /* Product Price */
-.purchase-history .product-details p.price {
-  font-size: 18px; /* Larger font size */
-  font-weight: bold;
-  margin: 5px 0;
-  color: #000; /* Black text */
+.order-history .order-details {
+  display: flex;
+  flex-direction: column; /* Stack details vertically */
+  padding: 15px; /* Increased padding for better readability */
 }
 
 /* Product Description */
-.purchase-history .product-details p.description {
-  font-size: 16px; /* Larger font size */
-  color: #333; /* Dark gray text */
-  margin: 5px 0;
+.order-history .product-details {
+  display: flex;
+  justify-content: space-between; /* Space out product details */
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ddd; /* Light border for product item */
+  border-radius: 4px;
+  background-color: #f9f9f9; /* Light gray background */
 }
 
 #edit-button {
@@ -298,6 +294,25 @@ button.edit:hover {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+/* Order Status Styling */
+.order-status {
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 4px;
+  color: #fff; /* White text */
+}
+
+.order-status.in-progress {
+  background-color: orange; /* Orange for in progress */
+}
+
+.order-status.confirmed {
+  background-color: green; /* Green for confirmed */
+}
+
+.order-status.cancelled {
+  background-color: red; /* Red for cancelled */
 }
 
 #edit-button:hover {

@@ -141,7 +141,9 @@ export const Order = () => {
                     <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                     <td>{totalItems} items</td>
                     <td>
-                      <button onClick={() => handleViewDetails(order._id)}>View Details</button>
+                      <button onClick={() => handleViewDetails(order._id)} id="view-details">
+                        View Details
+                      </button>
                     </td>
                   </tr>
                 );

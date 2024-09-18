@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { IUser } from "../models/interfaces";
 import { useGetToken } from "../hooks/useGetToken";
+import { useGetProducts } from "../hooks/useGetProducts";
 import "./styles/userDetails.css";
 
 interface UserDetailsProps {
@@ -15,6 +16,7 @@ export const UserDetails: React.FC<UserDetailsProps> = ({ userID }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { headers } = useGetToken();
+  const { products, getProductById } = useGetProducts();
 
   const fetchUser = async (id: string) => {
     try {
@@ -38,10 +40,16 @@ export const UserDetails: React.FC<UserDetailsProps> = ({ userID }) => {
   if (error) return <p>{error}</p>;
   if (!user) return <p>No user found</p>;
 
+  const orderslist = user.orders
+    .map((itemId) => {
+      const product = getProductById(itemId);
+      return product ? { name: product.productName, price: product.regularPrice } : "Unknown Product";
+    })
+    .join(", ");
+
   const handleDelete = async (id: string) => {
     try {
       await axios.delete(`http://localhost:3001/admin/users/${id}`, { headers });
-      // alert("User deleted successfully");
       window.location.reload();
     } catch (err) {
       console.error("Error deleting user:", err);
@@ -60,11 +68,10 @@ export const UserDetails: React.FC<UserDetailsProps> = ({ userID }) => {
       <p>
         <strong>Address:</strong> {user.address}
       </p>
-      {/* <p>
-        <strong>Purchased Items:</strong> {user.purchasedItems.map((item) => item).join(", ")}
-        </p> */}
-      {/*  TODO add order ID here */}
-      {user.isAdmin ? null : <button onClick={() => handleDelete(user._id)}>Delete</button>}
+      <p>
+        <strong>orders list:</strong> {orderslist}
+      </p>
+      {user.isAdmin ? null : <button onClick={() => handleDelete(user._id || "")}>Delete</button>}
     </div>
   );
 };

@@ -1,8 +1,8 @@
 interface IProduct {
-  _id?: string;
+  _id: string; // Make this required to avoid undefined errors
   productName: string;
-  regularPrice: GLfloat;
-  salePrice?: GLfloat;
+  regularPrice: number; // Changed to number
+  salePrice?: number; // Changed to number
   stockQuantity: number;
   img1: string;
   img2: string;
@@ -11,7 +11,7 @@ interface IProduct {
 }
 
 interface IUser {
-  _id?: string;
+  _id: string; // Make this required
   fullName: string;
   password: string;
   imgURL?: string;
@@ -19,12 +19,12 @@ interface IUser {
   phone: string;
   address: string;
   isAdmin: boolean;
-  purchasedItems: string[];
+  orders: string[];
 }
 
 interface IOrderItem {
-  productId: string;
-  quantity: number;
+  productId: string; // ID of the product
+  quantity: number; // Quantity of this product in the order
 }
 
 interface IOrder {
@@ -33,9 +33,20 @@ interface IOrder {
   email: string;
   phone: string;
   address: string;
-  items: IOrderItem[];
+  items: IOrderItem[]; // List of items in the order
   total: number;
-  createdAt: string; // Added to show order creation date
+  status: string;
+  createdAt: string; // Order creation date
 }
 
-export type { IProduct, IUser, IOrder, IOrderItem };
+interface IFormData {
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  items?: IOrderItem[]; // Items should reference IOrderItem
+  total?: number;
+  userID?: string; // Make userID optional
+}
+
+export type { IProduct, IUser, IOrder, IOrderItem, IFormData };

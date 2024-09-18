@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { verifyToken } from "../middlewares/user";
 import { ProductModel } from "../models/product";
+import { OrderModel } from "../models/order";
 
 const router = Router();
 
@@ -110,22 +111,11 @@ router.delete("/profile", verifyToken, async (req: Request, res: Response) => {
   }
 });
 
-router.get("/purchased-items/:userID", verifyToken, async (req: Request, res: Response) => {
+router.get("/orders-list/:userID", verifyToken, async (req: Request, res: Response) => {
   const { userID } = req.params;
   try {
-    const user = await UserModel.findById(userID);
-    if (!user) {
-      return res.status(404).json({ type: UserErrors.NO_USER_FOUND });
-    }
-
-    const purchasedItems = user.purchasedItems;
-    const products = await Promise.all(
-      purchasedItems.map(async (itemId) => {
-        const product = await ProductModel.findById(itemId);
-        return product;
-      })
-    );
-    res.json({ products });
+    const orders = await OrderModel.find({ userId: userID }); // Assuming you have a userId field in your Order model
+    res.json({ orders });
   } catch (err) {
     res.status(500).json({ type: err });
   }

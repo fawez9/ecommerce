@@ -6,15 +6,9 @@ import { useGetProducts } from "../../hooks/useGetProducts";
 import "./style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { IFormData } from "../../models/interfaces";
 
-interface FormData {
-  fullName: string;
-  email: string;
-  phone: string;
-  address: string;
-}
-
-const formDataInitialValues: FormData = {
+const formDataInitialValues: IFormData = {
   fullName: "",
   email: "",
   phone: "",
@@ -23,7 +17,7 @@ const formDataInitialValues: FormData = {
 
 export const CheckoutPage = ({ isAuth }: { isAuth: boolean }) => {
   const { cartItems, clearCart } = useCart();
-  const [formData, setFormData] = useState<FormData>({ ...formDataInitialValues });
+  const [formData, setFormData] = useState<IFormData>({ ...formDataInitialValues });
   const [loading, setLoading] = useState(isAuth);
   const [error, setError] = useState<string | null>(null);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
@@ -32,7 +26,7 @@ export const CheckoutPage = ({ isAuth }: { isAuth: boolean }) => {
   const userID = localStorage.getItem("userID");
 
   // Use the updated hook
-  const { products, isLoading: productsLoading, getProductById } = useGetProducts();
+  const { isLoading: productsLoading, getProductById } = useGetProducts();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -58,7 +52,7 @@ export const CheckoutPage = ({ isAuth }: { isAuth: boolean }) => {
     };
 
     fetchUserData();
-  }, [isAuth, userID, headers]);
+  }, [isAuth, userID, headers.Authorization]);
 
   // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,17 +79,26 @@ export const CheckoutPage = ({ isAuth }: { isAuth: boolean }) => {
       quantity,
     }));
 
+    const orderData: IFormData = {
+      ...formData,
+      items: transformedCartItems,
+      total: totalPrice,
+    };
+
+    if (isAuth && userID) {
+      orderData.userID = userID;
+    }
+    // console.log("Order data being sent:", orderData);
+
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:3001/order/", // Ensure this is the correct endpoint for orders
-        {
-          ...formData,
-          items: transformedCartItems,
-          total: totalPrice,
-        },
+
+        orderData,
+
         { headers }
       );
-      console.log("Order submitted successfully:", response.data);
+      // console.log("Order submitted successfully:", response.data);
       setOrderSubmitted(true);
     } catch (error) {
       console.error("Error submitting order:", error);

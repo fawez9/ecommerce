@@ -30,7 +30,7 @@ export const AdminPage = () => {
       case "products":
         return <ProductsAdmin />;
       case "users":
-        return <User onUserClick={handleUserClick} />;
+        return <User />;
       case "orders":
         return <Order />;
       case "userDetails":

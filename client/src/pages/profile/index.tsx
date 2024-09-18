@@ -3,34 +3,11 @@ import axios from "axios";
 import { useGetToken } from "../../hooks/useGetToken";
 import "./style.css"; // Import the CSS file
 import { UserErrors } from "../../errors";
+import { IOrder, IProduct, IUser } from "../../models/interfaces";
+import { useGetProducts } from "../../hooks/useGetProducts"; // Assuming you have this hook
 
 interface ProfilePageProps {
   isAdmin: boolean;
-}
-
-// Define the structure for Product
-export interface IProduct {
-  _id: string;
-  productName: string;
-  regularPrice: number;
-  salePrice?: number;
-  stockQuantity: number;
-  img1: string;
-  img2: string;
-  img3?: string;
-  description: string;
-}
-
-export interface IUser {
-  _id?: string;
-  fullName: string;
-  password: string;
-  imgURL?: string;
-  email: string;
-  phone: string;
-  address: string;
-  isAdmin: boolean;
-  purchasedItems: string[]; // Assuming purchasedItems is an array of product IDs
 }
 
 export const ProfilePage = ({ isAdmin }: ProfilePageProps) => {
@@ -47,18 +24,18 @@ export const ProfilePage = ({ isAdmin }: ProfilePageProps) => {
   });
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"info" | "history">("info");
-  const [purchasedItems, setPurchasedItems] = useState<IProduct[]>([]);
-
+  const [ordersList, setOrdersList] = useState<IOrder[]>([]);
   const { headers } = useGetToken();
   const userID = localStorage.getItem("userID");
+
+  // Hook to get all products
+  const { products } = useGetProducts();
 
   const fetchUser = async () => {
     if (!userID) return;
 
     try {
-      const response = await axios.get(`http://localhost:3001/user/profile/${userID}`, {
-        headers,
-      });
+      const response = await axios.get(`http://localhost:3001/user/profile/${userID}`, { headers });
       setUser(response.data.user);
       setFormData({
         fullName: response.data.user.fullName,
@@ -73,22 +50,17 @@ export const ProfilePage = ({ isAdmin }: ProfilePageProps) => {
     }
   };
 
-  const fetchPurchasedItems = async () => {
+  const fetchOrderList = async () => {
     if (!userID) {
       console.error("User ID not found.");
       return;
     }
 
     try {
-      const response = await axios.get(`http://localhost:3001/user/purchased-items/${userID}`, {
-        headers,
-      });
-
-      // Assuming response.data.products is an array of products
-      const products: IProduct[] = response.data.products;
-      setPurchasedItems(products);
+      const response = await axios.get(`http://localhost:3001/user/orders-list/${userID}`, { headers });
+      setOrdersList(response.data.orders);
     } catch (error) {
-      console.error("Error fetching purchased items:", error);
+      console.error("Error fetching order list:", error);
     }
   };
 
@@ -98,15 +70,13 @@ export const ProfilePage = ({ isAdmin }: ProfilePageProps) => {
 
   useEffect(() => {
     if (activeTab === "history") {
-      fetchPurchasedItems();
+      fetchOrderList();
     }
   }, [activeTab]);
 
   useEffect(() => {
     if (alertMessage) {
       const timer = setTimeout(() => setAlertMessage(null), 5000);
-
-      // Clear the timer if the component unmounts
       return () => clearTimeout(timer);
     }
   }, [alertMessage]);
@@ -132,13 +102,11 @@ export const ProfilePage = ({ isAdmin }: ProfilePageProps) => {
           }),
         };
 
-        await axios.put(`http://localhost:3001/user/profile/${userID}`, dataToSend, {
-          headers,
-        });
-
+        await axios.put(`http://localhost:3001/user/profile/${userID}`, dataToSend, { headers });
         await fetchUser();
         setEditMode(false);
         setPasswordMode(false);
+        setAlertMessage("Profile updated successfully!");
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 400) {
@@ -155,6 +123,10 @@ export const ProfilePage = ({ isAdmin }: ProfilePageProps) => {
     }
   };
 
+  const getProductById = (productId: string): IProduct | undefined => {
+    return products.find((product) => product._id === productId);
+  };
+
   if (!user) return <p>Loading...</p>;
 
   return (
@@ -163,11 +135,11 @@ export const ProfilePage = ({ isAdmin }: ProfilePageProps) => {
         <button onClick={() => setActiveTab("info")} className={activeTab === "info" ? "active" : ""}>
           User Info
         </button>
-        {!isAdmin ? (
+        {!isAdmin && (
           <button onClick={() => setActiveTab("history")} className={activeTab === "history" ? "active" : ""}>
-            Purchase History
+            Order History
           </button>
-        ) : null}
+        )}
       </div>
       <div className="main-content">
         {alertMessage && (
@@ -183,25 +155,25 @@ export const ProfilePage = ({ isAdmin }: ProfilePageProps) => {
                 <div className="form-group">
                   <label>
                     Full Name:
-                    <input type="text" name="fullName" value={formData.fullName} onChange={handleInputChange} />
+                    <input type="text" name="fullName" value={formData.fullName} onChange={handleInputChange} required />
                   </label>
                 </div>
                 <div className="form-group">
                   <label>
                     Email:
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} />
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} required />
                   </label>
                 </div>
                 <div className="form-group">
                   <label>
                     Phone:
-                    <input type="text" name="phone" value={formData.phone} onChange={handleInputChange} />
+                    <input type="text" name="phone" value={formData.phone} onChange={handleInputChange} required />
                   </label>
                 </div>
                 <div className="form-group">
                   <label>
                     Address:
-                    <input type="text" name="address" value={formData.address} onChange={handleInputChange} />
+                    <input type="text" name="address" value={formData.address} onChange={handleInputChange} required />
                   </label>
                 </div>
                 {passwordMode && (
@@ -209,13 +181,13 @@ export const ProfilePage = ({ isAdmin }: ProfilePageProps) => {
                     <div className="form-group">
                       <label>
                         Current Password:
-                        <input type="password" name="currentPassword" value={formData.currentPassword} onChange={handleInputChange} />
+                        <input type="password" name="currentPassword" value={formData.currentPassword} onChange={handleInputChange} required />
                       </label>
                     </div>
                     <div className="form-group">
                       <label>
                         New Password:
-                        <input type="password" name="newPassword" value={formData.newPassword} onChange={handleInputChange} />
+                        <input type="password" name="newPassword" value={formData.newPassword} onChange={handleInputChange} required />
                       </label>
                     </div>
                   </>
@@ -244,25 +216,37 @@ export const ProfilePage = ({ isAdmin }: ProfilePageProps) => {
               </div>
             )}
           </div>
-        ) : (
-          <div className="purchase-history">
-            {purchasedItems.length === 0 ? (
-              <p>No purchased items found.</p>
+        ) : activeTab === "history" ? (
+          <div className="order-history">
+            {ordersList.length === 0 ? (
+              <p>No orders found.</p>
             ) : (
               <ul>
-                {purchasedItems.map((item) => (
-                  <li key={item._id}>
-                    <div className="product-details">
-                      <h3>{item.productName}</h3>
-                      <p className="price">{item.salePrice ? `$${item.salePrice.toFixed(2)}` : `$${item.regularPrice.toFixed(2)}`}</p>
-                      <p className="description">{item.description}</p>
+                {ordersList.map((order) => (
+                  <li key={order._id}>
+                    <div className="order-details">
+                      <p className={`order-status ${order.status.replace(/\s+/g, "-").toLowerCase()}`}>{order.status}</p>
+                      <p className="total">Total: ${order.total.toFixed(2)}</p>
+                      <div className="product-list">
+                        {order.items.map((item) => {
+                          const product = getProductById(item.productId);
+                          return product ? (
+                            <div key={item.productId} className="product-details">
+                              <h4>{product.productName}</h4>
+                              {product.img1 ? <img src={product.img1} alt={product.productName} /> : null}
+                              <p className="price">${product.salePrice ? product.salePrice.toFixed(2) : product.regularPrice.toFixed(2)}</p>
+                              <p>Quantity: {item.quantity}</p>
+                            </div>
+                          ) : null;
+                        })}
+                      </div>
                     </div>
                   </li>
                 ))}
               </ul>
             )}
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

@@ -60,3 +60,7 @@
 .orders-table input[type="checkbox"] {
   cursor: pointer;
 }
+
+#view-details {
+  width: 100%;
+}

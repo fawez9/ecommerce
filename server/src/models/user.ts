@@ -9,7 +9,7 @@ export interface IUser {
   phone: string;
   address: string;
   isAdmin: boolean;
-  purchasedItems: string[];
+  orders: string[];
 }
 
 const UserSchema = new Schema<IUser>({
@@ -20,7 +20,7 @@ const UserSchema = new Schema<IUser>({
   phone: { type: String, required: true, unique: true },
   address: { type: String },
   isAdmin: { type: Boolean, default: false },
-  purchasedItems: [{ type: Schema.Types.ObjectId, ref: "products", default: [] }],
+  orders: [{ type: Schema.Types.ObjectId, ref: "orders", default: [] }],
 });
 
 export const UserModel = model<IUser>("users", UserSchema);

@@ -105,8 +105,8 @@
 .order-actions {
   margin-top: 20px;
   display: flex;
-  justify-content: center; /* Center the buttons */
-  gap: 20px; /* Increased gap between buttons */
+  justify-content: center;
+  gap: 20px;
 }
 
 .order-actions button {
@@ -121,6 +121,7 @@
 .clear-cart-button {
   background-color: #ffffff;
   color: rgb(0, 0, 0);
+  border: 1px solid #000 !important; /* Ensure border is applied */
 }
 
 .clear-cart-button:hover {
@@ -131,7 +132,7 @@
 .proceed-button {
   background-color: #ffffff;
   color: rgb(0, 0, 0);
-  border: 2px solid #000000;
+  border: 1px solid #000000 !important; /* Ensure border is applied */
 }
 
 .proceed-button:hover {
