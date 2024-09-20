@@ -34,7 +34,7 @@ export interface IOrder {
 const OrderSchema = new Schema<IOrder>(
   {
     _id: { type: Schema.Types.ObjectId, auto: true },
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: false }, // Optional field for user ID
+    userId: { type: Schema.Types.ObjectId, ref: "users", required: false }, // Optional field for user ID
     fullName: { type: String, required: true },
     email: { type: String, required: true },
     phone: { type: String, required: true },
@@ -51,4 +51,4 @@ const OrderSchema = new Schema<IOrder>(
 );
 
 // Order Model
-export const OrderModel = model<IOrder>("Order", OrderSchema);
+export const OrderModel = model<IOrder>("orders", OrderSchema);

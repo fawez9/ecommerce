@@ -1,8 +1,9 @@
 import { Router, Request, Response } from "express";
 import { verifyToken, verifyAdmin } from "../middlewares/user";
 import { OrderModel } from "../models/order";
-import { UserErrors } from "../errors";
+import { ProductErrors, UserErrors } from "../errors";
 import { UserModel } from "../models/user";
+import { ProductModel } from "../models/product";
 
 const router = Router();
 
@@ -88,6 +89,47 @@ router.put("/:id", verifyToken, verifyAdmin, async (req: Request, res: Response)
     res.json({ message: "Order Status Updated Successfully" });
   } catch (err) {
     res.status(500).json({ type: err });
+  }
+});
+
+//order product
+router.post("/confirm", async (req: Request, res: Response) => {
+  const { userID, products, orderID } = req.body;
+
+  try {
+    // Find the order
+    const order = await OrderModel.findById(orderID);
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // Update product quantities
+    for (const product of products) {
+      const { productId, quantity } = product;
+      const dbProduct = await ProductModel.findById(productId);
+      if (!dbProduct) {
+        return res.status(404).json({ error: `Product ${productId} not found` });
+      }
+      if (dbProduct.stockQuantity < quantity) {
+        return res.status(400).json({ error: `Insufficient stock for product ${productId}` });
+      }
+      dbProduct.stockQuantity -= quantity;
+      await dbProduct.save();
+    }
+
+    // Update order status
+    order.status = "confirmed";
+    await order.save();
+
+    // Update user's order history if userID is provided
+    if (userID) {
+      await UserModel.findByIdAndUpdate(userID, { $push: { orders: orderID } });
+    }
+
+    res.json({ message: "Order confirmed successfully", order });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "An error occurred while confirming the order" });
   }
 });
 

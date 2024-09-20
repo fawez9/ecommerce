@@ -163,3 +163,22 @@
   color: #000;
   cursor: pointer;
 }
+
+.status-banner {
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  width: 20%;
+  color: #ffffff;
+  margin: 0 auto; /* Centers the banner */
+  text-align: center; /* Centers the text inside the banner */
+}
+
+.confirmed {
+  background-color: #09a509;
+}
+
+.declined {
+  background-color: #df2020;
+}

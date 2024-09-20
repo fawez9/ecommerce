@@ -26,6 +26,7 @@ export const AuthPage = () => {
 const Register = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [address, setAddress] = useState<string>("");
@@ -33,6 +34,20 @@ const Register = () => {
   const handleSubmit = async (event: SyntheticEvent) => {
     event.preventDefault();
 
+    if (!username || !password || !email || !phone || !address) {
+      alert("Please fill in all fields");
+      return;
+    }
+
+    if (password.length < 8) {
+      alert("Password must be at least 8 characters long");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
     try {
       await axios.post("http://localhost:3001/user/register", {
         fullName: username,
@@ -76,6 +91,12 @@ const Register = () => {
             Password:<span className="required">*</span>
           </label>
           <input type="password" id="password" value={password} required onChange={(event) => setPassword(event.target.value)} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="confirm-password">
+            Confirm Password:<span className="required">*</span>
+          </label>
+          <input type="password" id="confirm-password" required onChange={(event) => setConfirmPassword(event.target.value)} />
         </div>
         <div className="form-group">
           <label htmlFor="email">

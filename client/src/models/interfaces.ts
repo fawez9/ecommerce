@@ -37,6 +37,7 @@ interface IOrder {
   total: number;
   status: string;
   createdAt: string; // Order creation date
+  userID?: string; // Make userID optional
 }
 
 interface IFormData {

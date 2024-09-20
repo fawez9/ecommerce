@@ -5,6 +5,8 @@ import "./style.css"; // Import the CSS file
 import { UserErrors } from "../../errors";
 import { IOrder, IProduct, IUser } from "../../models/interfaces";
 import { useGetProducts } from "../../hooks/useGetProducts"; // Assuming you have this hook
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 
 interface ProfilePageProps {
   isAdmin: boolean;
@@ -14,6 +16,11 @@ export const ProfilePage = ({ isAdmin }: ProfilePageProps) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [passwordMode, setPasswordMode] = useState(false);
+  const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
+
+  const toggleOrderDetails = (orderId: string) => {
+    setExpandedOrderId((prevId) => (prevId === orderId ? null : orderId));
+  };
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -223,24 +230,38 @@ export const ProfilePage = ({ isAdmin }: ProfilePageProps) => {
             ) : (
               <ul>
                 {ordersList.map((order) => (
-                  <li key={order._id}>
-                    <div className="order-details">
-                      <p className={`order-status ${order.status.replace(/\s+/g, "-").toLowerCase()}`}>{order.status}</p>
-                      <p className="total">Total: ${order.total.toFixed(2)}</p>
-                      <div className="product-list">
+                  <li key={order._id} className="order-item">
+                    <div className="order-summary">
+                      <span className="order-id">Order ID: {order._id}</span>
+                      <span className="item-count">{order.items.length} items</span>
+                      <span className="total-price">Total: ${order.total.toFixed(2)}</span>
+                      <span className="order-toggle" onClick={() => toggleOrderDetails(order._id)}>
+                        {expandedOrderId === order._id ? <FontAwesomeIcon icon={faAngleUp} /> : <FontAwesomeIcon icon={faAngleDown} />}
+                      </span>
+                    </div>
+                    <div className={`order-status ${order.status.replace(/\s+/g, "-").toLowerCase()}`}>{order.status}</div>
+                    {order.createdAt && <span className="order-date">Date: {new Date(order.createdAt).toLocaleDateString()}</span>}
+                    {expandedOrderId === order._id && (
+                      <div className="order-details">
                         {order.items.map((item) => {
                           const product = getProductById(item.productId);
                           return product ? (
                             <div key={item.productId} className="product-details">
                               <h4>{product.productName}</h4>
-                              {product.img1 ? <img src={product.img1} alt={product.productName} /> : null}
-                              <p className="price">${product.salePrice ? product.salePrice.toFixed(2) : product.regularPrice.toFixed(2)}</p>
-                              <p>Quantity: {item.quantity}</p>
+                              {product.img1 && (
+                                <div className="product-image-container">
+                                  <img src={product.img1} alt={product.productName} className="product-image" />
+                                </div>
+                              )}
+                              <div className="product-info">
+                                <p className="price">${product.salePrice ? product.salePrice.toFixed(2) : product.regularPrice.toFixed(2)}</p>
+                                <p>Quantity: {item.quantity}</p>
+                              </div>
                             </div>
                           ) : null;
                         })}
                       </div>
-                    </div>
+                    )}
                   </li>
                 ))}
               </ul>

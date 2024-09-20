@@ -314,7 +314,8 @@ body {
 }
 
 .cart-content {
-  padding: 20px;
+  padding: 15px;
+  margin-left: -10px; /* Adjust this value as necessary */
 }
 
 .cart-summary {
@@ -410,10 +411,6 @@ body {
   border-bottom: 1px solid #ddd;
 }
 
-.cart-content {
-  padding: 15px;
-}
-
 .cart-item {
   display: flex;
   align-items: center;
@@ -424,7 +421,6 @@ body {
 .product-img {
   width: 80%;
   height: 80%;
-  object-fit: cover;
   margin-right: 15px;
   border-radius: 8px;
 }

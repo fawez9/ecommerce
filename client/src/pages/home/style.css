@@ -132,3 +132,40 @@
   font-weight: bold;
   z-index: 1;
 }
+
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.opening-section {
+  width: 100%;
+  height: 400px; /* Adjust as needed */
+  overflow: hidden;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.opening-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center; /* Adjust this to show a specific part of the image */
+}
+
+.home-title {
+  font-size: 2.5em;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  width: 100%;
+  padding: 0 20px;
+}
+
+/* Rest of your existing CSS for product cards, etc. */

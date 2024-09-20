@@ -1,5 +1,5 @@
 // components/Navbar.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faBars, faTimes, faChevronDown, faUser, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -12,15 +12,21 @@ interface NavbarProps {
   isAuth: boolean;
   userName?: string;
   isAdmin?: boolean;
+  showFooter: boolean;
+  setShowFooter: (show: boolean) => void; // Add this prop
 }
 
-export const Navbar = ({ onLogout, isAuth, userName, isAdmin }: NavbarProps) => {
+export const Navbar = ({ onLogout, isAuth, userName, isAdmin, showFooter, setShowFooter }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const navigate = useNavigate();
   const { cartItems, clearCart, updateCartQuantity, removeFromCart } = useCart();
   const { products } = useGetProducts(); // Fetch products
+
+  useEffect(() => {
+    setShowFooter(!isCartOpen);
+  }, [isCartOpen, setShowFooter]);
 
   const toggleMenu = () => {
     setIsOpen((prevState) => !prevState);

@@ -38,6 +38,14 @@ export const Order = () => {
   if (error) {
     return <div className="error-message">{error}</div>;
   }
+  const handleOrderStatusChange = async (orderId: string, newStatus: string) => {
+    try {
+      await axios.put(`http://localhost:3001/order/${orderId}`, { status: newStatus }, { headers });
+      setOrders((prevOrders) => prevOrders.map((order) => (order._id === orderId ? { ...order, status: newStatus } : order)));
+    } catch (err) {
+      setError("ERROR: Unable to update order status.");
+    }
+  };
 
   const handleSelectOrder = (orderId: string) => {
     setSelectedOrders((prevSelectedOrders) => {
@@ -78,19 +86,7 @@ export const Order = () => {
   if (selectedOrderId) {
     const selectedOrder = orders.find((order) => order._id === selectedOrderId);
     if (selectedOrder) {
-      return (
-        <OrderDetails
-          order={selectedOrder}
-          getProductById={getProductById}
-          onBack={() => setSelectedOrderId(null)}
-          onConfirm={function (): void {
-            throw new Error("Function not implemented."); // TODO: Implement this function to confirm the order
-          }}
-          onDelete={function (): void {
-            throw new Error("Function not implemented."); // TODO: Implement this function to delete the order
-          }}
-        />
-      );
+      return <OrderDetails order={selectedOrder} getProductById={getProductById} onBack={() => setSelectedOrderId(null)} onOrderStatusChange={handleOrderStatusChange} />;
     }
   }
 

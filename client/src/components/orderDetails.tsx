@@ -8,11 +8,10 @@ interface OrderDetailsProps {
   order: IOrder;
   getProductById: (productId: string) => IProduct | undefined;
   onBack: () => void;
-  onConfirm: () => void;
-  onDelete: () => void;
+  onOrderStatusChange: (orderId: string, newStatus: string) => void;
 }
 
-export const OrderDetails: React.FC<OrderDetailsProps> = ({ order, getProductById, onBack, onConfirm, onDelete }) => {
+export const OrderDetails = ({ order, getProductById, onBack, onOrderStatusChange }: OrderDetailsProps) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleImageClick = (imageUrl: string) => {
@@ -21,6 +20,31 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({ order, getProductByI
 
   const handleClosePopup = () => {
     setSelectedImage(null);
+  };
+
+  const handleConfirm = async () => {
+    try {
+      await onOrderStatusChange(order._id, "confirmed");
+    } catch (error) {
+      console.error("Error confirming order:", error);
+    }
+  };
+
+  const handleDecline = async () => {
+    try {
+      await onOrderStatusChange(order._id, "declined");
+    } catch (error) {
+      console.error("Error declining order:", error);
+    }
+  };
+
+  const renderStatusBanner = () => {
+    if (order.status === "confirmed") {
+      return <div className="status-banner confirmed">Order Confirmed</div>;
+    } else if (order.status === "declined") {
+      return <div className="status-banner declined">Order Declined</div>;
+    }
+    return null;
   };
 
   return (
@@ -75,14 +99,17 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({ order, getProductByI
           })}
         </tbody>
       </table>
-      <div className="order-actions">
-        <button onClick={onConfirm} className="confirm-button">
-          Confirm Order
-        </button>
-        <button onClick={onDelete} className="delete-button">
-          Delete Order
-        </button>
-      </div>
+      {order.status === "in progress" && (
+        <div className="order-actions">
+          <button onClick={handleConfirm} className="confirm-button">
+            Confirm Order
+          </button>
+          <button onClick={handleDecline} className="delete-button">
+            Decline Order
+          </button>
+        </div>
+      )}
+      {renderStatusBanner()}
       {selectedImage && (
         <div className="popup active" onClick={handleClosePopup}>
           <div className="popup-content">

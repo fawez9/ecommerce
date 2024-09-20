@@ -1,15 +1,13 @@
 /* styles/order.css */
 .order-page {
-  padding: 20px;
-  max-width: 1200px;
+  padding: 100px; /* Increased padding for more space */
+  max-width: 1800px; /* Increased max-width for a wider layout */
   margin: 0 auto;
   font-family: Arial, sans-serif;
   color: #333;
 }
-
 .order-page h1 {
   font-size: 2.5rem;
-  margin-bottom: 20px;
   color: #333;
 }
 
@@ -21,7 +19,7 @@
 }
 
 .cart-item {
-  display: flex;
+  width: 300px; /* Increased width for larger items */
   flex-direction: column;
   align-items: center;
   border: 1px solid #ddd;

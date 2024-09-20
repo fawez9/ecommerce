@@ -1,5 +1,7 @@
+import React from "react";
 import { useGetProducts } from "../../hooks/useGetProducts";
 import { useCart } from "../../context/cartContext";
+import openingImage from "../../assets/skull.jpg"; // Adjust the path as needed
 import "./style.css";
 
 export const HomePage = () => {
@@ -24,7 +26,9 @@ export const HomePage = () => {
 
   return (
     <div className="home">
-      {/* TODO: Add image here <<------------------------------------------- */}
+      <div className="opening-section">
+        <img src={openingImage} alt="Welcome to our store" className="opening-image" />
+      </div>
       <h1 className="home-title">Collection 2024</h1>
       <div className="products">
         {products.map((product) => (
