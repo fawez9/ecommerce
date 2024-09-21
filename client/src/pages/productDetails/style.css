@@ -1,0 +1,115 @@
+/* General styles */
+body {
+  font-family: Arial, sans-serif; /* Set a base font for the page */
+  margin: 0;
+  padding: 0;
+}
+
+.product-details {
+  display: flex; /* Use flexbox to arrange image and info side by side */
+  flex-direction: column; /* Default to column layout for mobile devices */
+  max-width: 1200px; /* Set a maximum width for the product details */
+  margin: 20px auto; /* Center the product details on the page */
+  padding: 15px; /* Add padding inside the container */
+  border: 1px solid #ddd; /* Add a subtle border around the details */
+  border-radius: 8px; /* Rounded corners */
+  background-color: #fff; /* White background color */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Image styles */
+.product-image {
+  flex: 1; /* Allow the image section to take available space */
+}
+
+.product-image img {
+  width: 100%; /* Make the image responsive */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 8px; /* Rounded corners for the image */
+}
+
+/* Product info styles */
+.product-info {
+  flex: 2; /* Allow the info section to take more space */
+  padding: 20px; /* Add padding around the info */
+}
+
+.product-name {
+  font-size: 24px; /* Large font size for product name */
+  margin-bottom: 10px; /* Space below the name */
+}
+
+.description {
+  font-size: 16px; /* Regular font size for description */
+  color: #666; /* Gray color for description text */
+  margin-bottom: 20px; /* Space below the description */
+}
+
+.price-section {
+  margin-bottom: 20px; /* Space below the price section */
+}
+
+.original-price {
+  text-decoration: line-through; /* Strikethrough for original price */
+  color: #999; /* Gray color for original price */
+}
+
+.price {
+  font-size: 20px; /* Regular price font size */
+  color: #2ecc71; /* Green color for price */
+}
+
+/* Add to cart section styles */
+.add-to-cart-section {
+  align-items: center; /* Center items vertically */
+}
+
+.add-to-cart {
+  background-color: #ffffff; /* Green background color */
+  color: #000000; /* White text color */
+  border-radius: 8px; /* Rounded corners */
+  border: 1px solid #000000; /* Remove border */
+  padding: 10px 20px; /* Padding inside the button */
+  margin-left: 20px; /* Space to the left of the button */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Out of stock styles */
+
+/* Responsive styles */
+@media (min-width: 768px) {
+  .product-details {
+    flex-direction: row; /* Change to row layout for larger screens */
+  }
+
+  .product-info {
+    padding-left: 40px; /* More padding on larger screens */
+  }
+}
+
+@media (max-width: 767px) {
+  .product-name {
+    font-size: 20px; /* Smaller font size for mobile */
+  }
+
+  .description,
+  .price,
+  .sale-price,
+  .original-price {
+    font-size: 14px; /* Smaller font size for mobile */
+  }
+
+  .add-to-cart {
+    width: 100%; /* Full width button on mobile */
+    margin-left: 0; /* Remove left margin */
+    margin-top: 10px; /* Margin on top for spacing */
+  }
+}
+
+.loading,
+.error,
+.not-found {
+  text-align: center; /* Center align loading, error, and not found messages */
+  font-size: 18px; /* Font size for messages */
+  margin: 20px 0; /* Margin for spacing */
+}

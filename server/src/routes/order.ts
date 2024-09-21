@@ -1,7 +1,6 @@
 import { Router, Request, Response } from "express";
 import { verifyToken, verifyAdmin } from "../middlewares/user";
 import { OrderModel } from "../models/order";
-import { ProductErrors, UserErrors } from "../errors";
 import { UserModel } from "../models/user";
 import { ProductModel } from "../models/product";
 

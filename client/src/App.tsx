@@ -12,6 +12,7 @@ import "./App.css";
 import NotFound from "./components/notfound";
 import { Footer } from "./components/footer";
 import { CheckoutPage } from "./pages/checkout";
+import { ProductDetailsPage } from "./pages/productDetails";
 
 const RoutesWrapper = ({ isAuth, isAdmin, showFooter, setShowFooter }) => {
   const location = useLocation();
@@ -66,6 +67,8 @@ const RoutesWrapper = ({ isAuth, isAdmin, showFooter, setShowFooter }) => {
         <Route path="/admin" element={isAdmin ? <AdminPage /> : <Navigate to="/auth" />} />
         <Route path="/auth" element={isAuth ? <Navigate to="/" /> : <AuthPage />} />
         <Route path="/checkout" element={<CheckoutPage isAuth={isAuth} />} />
+        <Route path="/product/:productId" element={<ProductDetailsPage />} />
+        <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {!isAdmin && showFooter && <Footer />}

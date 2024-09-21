@@ -1,0 +1,86 @@
+/* General styles */
+body {
+  font-family: Arial, sans-serif; /* Set a base font for the dashboard */
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4; /* Light gray background for the dashboard */
+}
+
+.dashboard {
+  max-width: 1200px; /* Set a maximum width for the dashboard */
+  margin: 20px auto; /* Center the dashboard on the page */
+  padding: 20px; /* Add padding inside the dashboard */
+  border-radius: 8px; /* Rounded corners */
+  background-color: #fff; /* White background for the dashboard */
+}
+
+/* Stats section styles */
+.dashboard-stats {
+  display: flex; /* Use flexbox to arrange stat cards */
+  justify-content: space-between; /* Evenly space out the cards */
+  margin-bottom: 20px; /* Space below stats section */
+}
+
+.stat-card {
+  flex: 1; /* Allow cards to grow equally */
+  margin: 0 10px; /* Margin between cards */
+  padding: 20px; /* Padding inside cards */
+  border-radius: 8px; /* Rounded corners for cards */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  border: 1px solid #000; /* Black border for cards */
+  background-color: #ffffff; /* Blue background for stat cards */
+  color: rgb(0, 0, 0); /* White text color */
+  text-align: center; /* Center align text inside cards */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.stat-card:hover {
+  background-color: #000000; /* Darken color on hover */
+  color: #ffffff; /* White text color on hover */
+}
+
+.stat-title {
+  font-size: 18px; /* Font size for stat titles */
+  margin: 0; /* Remove margin */
+}
+
+.stat-value {
+  font-size: 32px; /* Large font size for stat values */
+  margin: 10px 0 0; /* Margin for spacing */
+}
+
+/* Charts section styles */
+.dashboard-charts {
+  /* Placeholder for future chart styles */
+  background-color: #ecf0f1; /* Light gray background for chart area */
+  padding: 20px; /* Padding inside charts area */
+  border-radius: 8px; /* Rounded corners */
+  min-height: 200px; /* Minimum height for charts area */
+}
+
+/* Loading and error messages */
+.loading,
+.error {
+  text-align: center; /* Center align loading and error messages */
+  font-size: 18px; /* Font size for messages */
+  margin: 20px 0; /* Margin for spacing */
+}
+
+.loading {
+  color: #000000; /* Blue color for loading message */
+}
+
+.error {
+  color: #e74c3c; /* Red color for error messages */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .dashboard-stats {
+    flex-direction: column; /* Stack stat cards vertically on small screens */
+  }
+
+  .stat-card {
+    margin: 10px 0; /* Adjust margin for stacked layout */
+  }
+}

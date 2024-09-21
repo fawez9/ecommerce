@@ -41,6 +41,12 @@
   padding-top: 40px; /* Add padding to the top to push content down */
 }
 
+.product-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
+}
+
 .product-img {
   width: 100%;
   height: auto;
@@ -169,3 +175,6 @@
 }
 
 /* Rest of your existing CSS for product cards, etc. */
+.product-link {
+  text-decoration: none;
+}

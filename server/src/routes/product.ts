@@ -1,6 +1,5 @@
 import { Router, Request, Response } from "express";
 import { ProductModel } from "../models/product";
-import { UserModel } from "../models/user";
 import { ProductErrors } from "../errors";
 import { verifyAdmin, verifyToken } from "../middlewares/user";
 const router = Router();
