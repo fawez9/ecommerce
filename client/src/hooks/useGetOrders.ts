@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { useGetToken } from "./useGetToken";
 
-export const useGetOrders = () => {
+export const useGetOrders = (pollingInterval = 5000) => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const { headers } = useGetToken();
 
   useEffect(() => {
@@ -20,9 +19,10 @@ export const useGetOrders = () => {
         const data = await response.json();
         const ordersWithTimestamps = data.orders.map((order) => ({
           ...order,
-          createdAt: new Date(order.createdAt).getTime(), // Convert createdAt to timestamp
+          createdAt: new Date(order.createdAt).getTime(),
         }));
         setOrders(ordersWithTimestamps);
+        setError(null);
       } catch (err) {
         console.error("Fetch Error:", err);
         setError(err.message);
@@ -30,8 +30,13 @@ export const useGetOrders = () => {
         setIsLoading(false);
       }
     };
+
     fetchOrders();
-  }, []);
+
+    const intervalId = setInterval(fetchOrders, pollingInterval);
+
+    return () => clearInterval(intervalId);
+  }, [pollingInterval, headers]);
 
   return { orders, isLoading, error };
 };

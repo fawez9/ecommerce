@@ -18,10 +18,10 @@ export const AdminPage = () => {
     setCollapsed(!collapsed);
   };
 
-  const handleUserClick = (userID: string) => {
+  /* const handleUserClick = (userID: string) => {
     setSelectedUserID(userID);
     setActiveSection("userDetails");
-  };
+  }; */
 
   const renderContent = () => {
     switch (activeSection) {

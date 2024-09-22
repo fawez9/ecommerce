@@ -44,7 +44,6 @@ export const HomePage = () => {
               ) : (
                 <p className="product-price">{product.regularPrice.toFixed(2)} DT</p>
               )}
-              <p className="product-description">{product.description}</p>
             </Link>
             {product.stockQuantity > 0 ? (
               <button

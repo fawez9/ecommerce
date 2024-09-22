@@ -57,6 +57,7 @@ export const ProductDetailsPage = () => {
       <div className="product-image">{product.img1 && <img src={product.img1} alt={product.productName} className="main-image" />}</div>
       <div className="product-info">
         <h1 className="product-name">{product.productName || "Unnamed Product"}</h1>
+        <h3>Description:</h3>
         <p className="description">{product.description || "No description available"}</p>
         <div className="price-section">
           {safelyGetPrice("salePrice") !== "N/A" ? (

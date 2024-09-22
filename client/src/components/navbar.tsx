@@ -134,7 +134,12 @@ export const Navbar = ({ onLogout, isAuth, userName, isAdmin, showFooter, setSho
           )}
         </div>
         <div className="cart-summary">
-          <button className="checkout-button" onClick={() => navigate("/order")}>
+          <button
+            className="checkout-button"
+            onClick={() => {
+              navigate("/order");
+              setIsCartOpen(false);
+            }}>
             Voir →
           </button>
           <button className="checkout-button clear-cart" onClick={clearCart}>

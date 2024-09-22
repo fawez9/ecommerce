@@ -129,7 +129,7 @@ export const ProductsAdmin = () => {
                     <p className="product-price">{product.regularPrice.toFixed(2)} DT</p>
                   )}
                 </div>
-                <p className="product-description">{product.description}</p>
+
                 <div>
                   <button className="edit-button" onClick={() => handleEdit(product)}>
                     Edit
